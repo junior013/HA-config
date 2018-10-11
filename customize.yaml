@@ -1,0 +1,55 @@
+#'*.*':
+#  custom_ui_state_card: state-card-custom-ui
+group.all_lights: {}
+group.weather:
+  state_card_mode: badges
+
+sensor.nappali_vezerlo:
+  device_class: battery
+sensor.nappali_dimmer:
+  device_class: battery
+sensor.eloter_vezerlo_1:
+  device_class: battery
+sensor.eloter_vezerlo_2:
+  device_class: battery
+sensor.furdo_vezerlo:
+  device_class: battery
+
+sensor.yr_weather_symbol:
+  friendly_name: Nest
+sensor.yr_weather_wind_speed:
+  friendly_name: Wind
+  icon: mdi:fan
+  state_card_mode: badges
+sensor.yr_weather_temperature:
+  friendly_name: Outside Temperature
+  state_card_mode: badges
+sensor.yr_weather_humidity:
+  friendly_name: Outside Humidity
+  icon: mdi:water-percent
+  state_card_mode: badges
+sensor.yr_weather_pressure:
+  friendly_name: Air Pressure
+  icon: mdi:speedometer
+  state_card_mode: badges
+sensor.yr_weather_fog:
+  friendly_name: Fog
+  icon: mdi:weather-fog
+  state_card_mode: badges
+sensor.yr_weather_cloudiness:
+  friendly_name: Cloudiness
+  icon: mdi:weather-cloudy
+  state_card_mode: badges
+sensor.inner_temperature:
+  icon: mdi:thermometer
+  state_card_mode: badges
+sensor.inner_humidity:
+  icon: mdi:water-percent
+  state_card_mode: badges
+group.weather:
+  state_card_mode: badges
+group.room_lights:
+  assumed_state: true
+binary_sensor.floorplan:
+  custom_ui_state_card: state-card-floorplan
+  config: !include floorplan.yaml

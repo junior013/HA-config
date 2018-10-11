@@ -1,0 +1,19 @@
+- platform: yr
+  name: yr_weather
+  monitored_conditions:
+    - temperature
+    - humidity
+    - pressure
+    - windSpeed
+    - fog
+    - cloudiness
+
+- platform: openweathermap
+  api_key: !secret openweathermap_api
+  forecast: 0
+  monitored_conditions:
+    - weather
+    - temperature
+    - wind_speed
+    - humidity
+    - pressure

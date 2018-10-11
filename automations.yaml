@@ -1,0 +1,129 @@
+
+# Device tracker triggered automations
+- id: scene_anybody_home
+  alias: Scene set when anybody arrives home
+  trigger:
+    platform: state
+    to: home
+    entity_id:
+      - device_tracker.junior_3t
+      - device_tracker.zsani_tel
+  action:
+    - service: automation.turn_off
+      entity_id: automation.scene_set_when_anybody_arrives_home
+    - service: script.cover_open_if_sun_above_horizon
+    - service: script.minimal_light_if_sun_below_horizon
+    - condition: state
+      state: home
+      entity_id: device_tracker.junior_3t
+    - service: media_player.turn_on
+      entity_id: media_player.hifi
+
+- id: scene_everybody_away
+  alias: Scene set when everybody leaves home
+  trigger:
+    platform: state
+    from: home
+    entity_id:
+      - device_tracker.junior_3t
+      - device_tracker.zsani_tel
+  condition:
+    condition: template
+    value_template: >
+      {% if is_state('device_tracker.junior_3t', 'home') or is_state('device_tracker.zsani_tel', 'home') %}
+        false
+      {% else %}
+        true
+      {% endif %}
+  action:
+    - service: automation.turn_on
+      entity_id: automation.scene_set_when_anybody_arrives_home
+    - service: scene.turn_on
+      entity_id: scene.covers_touch
+    - service: light.turn_off
+    - service: switch.turn_off
+      entity_id: switch.coffee
+    - service: media_player.turn_off
+      entity_id:
+        - media_player.hifi
+        - media_player.tv
+
+# Coffee socket can be ON only for a while
+- id: switch_timer_coffee
+  alias: Switch off Coffee after time
+  trigger:
+  - entity_id: switch.coffee
+    for:
+      minutes: '20'
+    platform: state
+    to: 'on'
+  action:
+  - alias: ''
+    data: {}
+    service: switch.turn_off
+
+# Automations triggered by RF433 signals
+- id: scene_by_rfkey1
+  alias: Morning scene by remote key A
+  trigger:
+    platform: mqtt
+    topic: "tele/rf-bridge/RESULT"
+  condition:
+    condition: template
+    value_template: '{{ trigger.payload_json.RfReceived.RfKey == 1 }}'
+  action:
+    - service: media_player.turn_on
+      entity_id: media_player.hifi
+    - service: script.cover_open_if_sun_above_horizon
+    - service: script.minimal_light_if_sun_below_horizon
+
+
+- id: scene_by_rfkey2
+  alias: Close covers by remote key B
+  trigger:
+    platform: mqtt
+    topic: "tele/rf-bridge/RESULT"
+  condition:
+    condition: template
+    value_template: '{{ trigger.payload_json.RfReceived.RfKey == 2 }}'
+  action:
+    service: scene.turn_on
+    entity_id: scene.covers_touch
+
+- id: scene_by_rfkey3
+  alias: Full open covers by remote key C
+  trigger:
+    platform: mqtt
+    topic: "tele/rf-bridge/RESULT"
+  condition:
+    condition: template
+    value_template: '{{ trigger.payload_json.RfReceived.RfKey == 3 }}'
+  action:
+    service: scene.turn_on
+    entity_id: scene.covers_open
+
+- id: scene_by_rfkey4
+  alias: Full close covers by remote key D
+  trigger:
+    platform: mqtt
+    topic: "tele/rf-bridge/RESULT"
+  condition:
+    condition: template
+    value_template: '{{ trigger.payload_json.RfReceived.RfKey == 4 }}'
+  action:
+    service: scene.turn_on
+    entity_id: scene.covers_close
+
+- id: scene_by_rfkey16
+  alias: Hallway light by motion detector
+  trigger:
+    platform: mqtt
+    topic: "tele/rf-bridge/RESULT"
+  condition:
+    condition: template
+    value_template: '{{ trigger.payload_json.RfReceived.RfKey == 16 }}'
+  action:
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
+    - service: script.hallway_light_on_for_time

@@ -1,0 +1,40 @@
+  - platform: template
+    sensors:
+      vacuum_status:
+        friendly_name: "Vacuum - Status"
+        value_template: "Status: {{ states.vacuum.xiaomi_vacuum_cleaner.state }} [{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.cleaned_area }}m² in {{ states.vacuum.xiaomi_vacuum_cleaner.attributes.cleaning_time }}']"
+
+  - platform: template
+    sensors:
+      vacuum_battery:
+        friendly_name: "Vacuum - Battery"
+        value_template: "Battery: {{ states.vacuum.xiaomi_vacuum_cleaner.attributes.battery_level }}"
+        device_class: battery
+        unit_of_measurement: '%'
+
+  - platform: template
+    sensors:
+      vacuum_battery_level:
+        friendly_name: "Vacuum - Battery level"
+        value_template: "{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.battery_level }}"
+        device_class: battery
+        unit_of_measurement: '%'
+
+  - platform: template
+    sensors:
+      areas_to_clean:
+        friendly_name: "Areas to clean"
+        # value_template: "[{% if is_state('input_boolean.toclean_lobby', 'on') %}
+        #     [30900,25200,33800,26200,1],
+        #   {% endif %}
+        #   {% if is_state('input_boolean.toclean_hallway', 'on') %}
+        #     [28000,29000,30100,29700,1],
+        #   {% endif %}
+        #   {% if is_state('input_boolean.toclean_diningroom', 'on') %}
+        #     [28100,25300,30800,28600,1],
+        #   {% endif %}
+        #   {% if is_state('input_boolean.toclean_livingroom', 'on') %}
+        #     [23100,25300,27900,28600,1],
+        #   {% endif %}]"
+        #value_template: "[[28000, 29000, 30100, 29700, 1], [28100, 25300, 30800, 28600, 1]]"
+        value_template: "[[28000, 29000, 30100, 29700, 1]]"

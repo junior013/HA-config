@@ -1,0 +1,19 @@
+- platform: tradfri
+  host: !secret ip_tradfri
+  allow_tradfri_groups: true
+
+- platform: group
+  name: Szoba
+  entities:
+    - light.izzo_1
+    - light.izzo_2
+    - light.izzo_3
+    - light.izzo_4
+
+- platform: group
+  name: Eloterek
+  entities:
+    - light.szelfogo
+    - light.etkezo
+    - light.kozlekedo
+

@@ -1,0 +1,218 @@
+homeassistant:
+  name: Home
+  latitude: !secret home_lat
+  longitude: !secret home_lon
+  elevation: !secret home_elev
+  unit_system: metric
+  time_zone: Europe/Budapest
+#  auth_providers:
+#   - type: homeassistant
+#   - type: legacy_api_password
+  customize: !include customize.yaml
+
+# customze_glob:
+    # "*.*":
+    #   custom_ui_state_card: state-card-custom-ui
+#     sensor.yr_weather_wind_speed:
+#       state_card_mode: badges
+#     sensor.yr_weather_temperature:
+#       state_card_mode: badges
+#     sensor.yr_weather_humidity:
+#       state_card_mode: badges
+#     sensor.yr_weather_pressure:
+#       state_card_mode: badges
+#     sensor.yr_weather_fog:
+#       state_card_mode: badges
+#     sensor.yr_weather_cloudiness:
+#       state_card_mode: badges
+#     sensor.inner_temperature:
+#       state_card_mode: badges
+#     sensor.inner_humidity:
+#       state_card_mode: badges
+#     device_tracker.junior_3t:
+#       extra_badge:
+#         attribute: battery
+#         unit: '%'
+#     device_tracker.*:
+#       show_last_changed: true
+#     sun.sun:
+#       extra_badge:
+# #      extra_data_template: "kelte: ${attributes.next_rising|timestamp_local} nyugta: ${attributes.next_setting|timestamp_local}"
+#         attribute: elevation
+#         unit: '°'
+
+customizer:
+  custom_ui: local
+
+http: !include inc/http.yaml
+
+mqtt:
+  embedded:
+  password: !secret api_pass
+
+frontend:
+  themes:
+    dark:
+      # Main Stuff #
+      primary-color: "#1ABA92" # Primary (most of the UI)
+      primary-background-color: "#303030" # Primary background colour (dialogs, e.t.c)
+      secondary-background-color: "#303030" # Secondary background colour (main UI background)
+      paper-card-background-color: "#424242" # Card background colour
+      paper-item-icon-color: "#1ABA92" # Icon colour
+      primary-text-color: "#FFFFFF" # Primary text colour
+      secondary-text-color: "rgba(255, 255, 255, 0.7)" # Secondary text colour
+      disabled-text-color: "rgba(255, 255, 255, 0.5)" # Disabled text colour
+      divider-color: "rgba(255, 255, 255, 0.12)" # Divider colour
+      paper-card-header-color: "#FFFFFF" # Card header text colour
+
+      # Nav Menu #
+      paper-listbox-background-color: "#424242" # Listbox background colour
+      paper-listbox-color: "#FFFFFF" # Listbox text colour
+      paper-grey-200: "#616161" # Listbox selected item background colour
+
+      # Switches #
+      paper-toggle-button-checked-ink-color: "#1ABA92"
+      paper-toggle-button-checked-button-color: "#1ABA92"
+      paper-toggle-button-checked-bar-color: "#1ABA92"
+
+      # Sliders #
+      paper-slider-knob-color: "#1ABA92"
+      paper-slider-knob-start-color: "#1ABA92"
+      paper-slider-pin-color: "#1ABA92"
+      paper-slider-active-color: "#1ABA92"
+      paper-slider-secondary-color: "#33F2D8"
+  extra_html_url:
+    - /local/custom_ui/state-card-custom-ui.html
+  extra_html_url_es5:
+    - /local/custom_ui/state-card-custom-ui-es5.html
+
+panel_custom:
+  - name: floorplan
+    sidebar_title: Floorplan
+    sidebar_icon: mdi:home
+    url_path: floorplan
+    config: !include floorplan.yaml
+
+# Enables configuration UI
+config:
+
+cloud:
+  google_actions:
+    filter:
+      include_domains:
+        - switch
+        - light
+        - cover
+        - script
+
+map:
+
+updater:
+  include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time.
+history:
+
+# View all events in a logbook
+logbook:
+
+# Track the sun
+sun:
+  name: Sun
+
+weather:
+  - platform: openweathermap
+    api_key: !secret openweathermap_api
+#    mode: daily
+
+zone: !include inc/zones.yaml
+device_tracker: !include device_tracker.yaml
+light: !include_dir_merge_list lights/
+scene: !include inc/scenes.yaml
+sensor: !include_dir_merge_list sensors/
+#binary_sensor: !include inc/sonoff_rf.yaml
+switch: !include_dir_merge_list switches/
+cover: !include inc/covers.yaml
+
+vacuum:
+  - platform: xiaomi_miio
+    alias: Jolika
+    host: 192.168.12.206
+    token: !secret roborock_token
+
+# Text to speech
+tts:
+  platform: google
+
+media_player:
+#   - platform: samsungtv
+#     host: 192.168.12.242
+#     port: 8001
+#     name: TV direct
+# #   mac: 14:BB:6E:FF:17:43
+#     mac: FC:F1:36:B7:53:E1
+  - platform: kodi
+    host: !secret ip_kodi
+    port: 80
+    name: Kodi
+  - platform: spotify
+    client_id: !secret spotify_id
+    client_secret: !secret spotify_secret
+#    aliases:
+#        abc123def456: 'Living Room'
+#        9183abas000: 'Bed Room'
+  - platform: broadlink
+    name: Hifi
+    host: !secret ip_broadlink
+    mac: !secret mac_broadlink
+    ircodes_ini: 'broadlink_ir_codes/philips-hifi.ini'
+  - platform: broadlink
+    name: TV
+    host: !secret ip_broadlink
+    mac: !secret mac_broadlink
+    ircodes_ini: 'broadlink_ir_codes/samsung.ini'
+    ping_host: !secret ip_samsung-tv
+
+ffmpeg:
+
+camera: !include inc/cameras.yaml
+
+group: !include groups.yaml
+automation: !include automations.yaml
+
+### Teszt ####
+
+input_number: !include inc/inputs.yaml
+
+input_boolean:
+  toclean_lobby:
+    name: Előszoba takarítás
+    initial: off
+  toclean_hallway:
+    name: Közlekedő takarítás
+    initial: off
+  toclean_diningroom:
+    name: Étkező takarítás
+    initial: off
+  toclean_livingroom:
+    name: Nappali takarítás
+    initial: off
+
+input_select:
+  vacuum_fan_speed:
+    name: Szívóerő
+    options:
+      - Mop
+      - Quiet
+      - Balanced
+      - Turbo
+      - MAX
+    initial: Balanced
+
+script: !include inc/scripts.yaml

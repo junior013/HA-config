@@ -1,0 +1,25 @@
+
+- platform: mqtt
+  name: "Coffee"
+  state_topic: "stat/coffee/POWER"
+  command_topic: "cmnd/coffee/POWER"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  retain: false
+#- platform: mqtt
+#  name: "Dual 1"
+#  state_topic: "stat/dual/POWER1"
+#  command_topic: "cmnd/dual/POWER1"
+#  qos: 1
+# payload_on: "ON"
+#  payload_off: "OFF"
+#  retain: true
+#- platform: mqtt
+#  name: "Dual 2"
+#  state_topic: "stat/dual/POWER2"
+#  command_topic: "cmnd/dual/POWER2"
+#  qos: 1
+#  payload_on: "ON"
+#  payload_off: "OFF"
+#  retain: true

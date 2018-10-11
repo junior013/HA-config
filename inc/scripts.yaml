@@ -1,0 +1,82 @@
+
+# Room cleaner scripts
+clean_livingroom:
+  sequence:
+    - service: vacuum.send_command
+      data:
+        entity_id: vacuum.xiaomi_vacuum_cleaner
+        command: app_zoned_clean
+        params: [[22740,24530,27560,27830,1]]
+clean_hallway:
+  sequence:
+    - service: vacuum.send_command
+      data:
+        entity_id: vacuum.xiaomi_vacuum_cleaner
+        command: app_zoned_clean
+        params: [[28000,29000,30100,29700,1]]
+clean_diningroom:
+  sequence:
+    - service: vacuum.send_command
+      data:
+        entity_id: vacuum.xiaomi_vacuum_cleaner
+        command: app_zoned_clean
+        params: [[28100,25300,30800,28600,1]]
+clean_lobby:
+  sequence:
+    - service: vacuum.send_command
+      data:
+        entity_id: vacuum.xiaomi_vacuum_cleaner
+        command: app_zoned_clean
+        params: [[30900,25200,33800,26200,1]]
+clean_multi:
+  sequence:
+    - service: vacuum.send_command
+      data:
+        entity_id: vacuum.xiaomi_vacuum_cleaner
+        command: app_zoned_clean
+        params: [[30900,25200,33800,26200,1],[28100,25300,30800,28600,1]]
+clean_selected:
+  sequence:
+    - service: vacuum.send_command
+      data_template:
+        entity_id: vacuum.xiaomi_vacuum_cleaner
+        command: app_zoned_clean
+        params: >
+          {{ states.sensor.areas_to_clean.state }}
+
+# Automation helper scripts
+minimal_light_if_sun_below_horizon:
+  sequence:
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
+    - service: light.turn_on
+      entity_id: light.eloterek_2
+      data:
+        brightness_pct: 5
+
+cover_open_if_sun_above_horizon:              
+  sequence:
+    - condition: state
+      entity_id: sun.sun
+      state: above_horizon
+    - service: scene.turn_on
+      entity_id: scene.covers_half
+
+hallway_light_on_for_time:
+  sequence:
+    - condition: state
+      entity_id: light.szelfogo
+      state: 'off'
+    - service: light.turn_on
+      entity_id: light.szelfogo
+      data:
+        brightness_pct: 10
+    - delay:
+        seconds: 15
+    - service: light.turn_on
+      entity_id: light.szelfogo
+      data:
+        brightness: 0
+        transition: 3
+

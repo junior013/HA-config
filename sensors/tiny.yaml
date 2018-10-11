@@ -1,0 +1,15 @@
+- platform: snmp
+#  id: inner_temp
+  host: !secret ip_tinycontrol
+  baseoid:  iso.3.6.1.4.1.17095.6.1.0
+  name: "Inner Temperature"
+  unit_of_measurement: '°C'
+  value_template: '{{((value | int) / 10) | float}}'
+- platform: snmp
+#  id: inner_hunid
+  host: !secret ip_tinycontrol
+  baseoid:  iso.3.6.1.4.1.17095.6.2.0
+  name: "Inner Humidity"
+  unit_of_measurement: '%'
+  value_template: '{{((value | int) / 10) | float}}'
+

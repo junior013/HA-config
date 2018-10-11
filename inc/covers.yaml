@@ -1,0 +1,79 @@
+  - platform: mqtt
+    name: "Erkély ajtó"
+    availability_topic: "tele/livingroom/LWT"
+    state_topic: "stat/livingroom/SHUTTER1"
+    command_topic: "cmnd/livingroom/backlog"
+ #   value_template: '{{value_json.shutterposition1}}'
+    qos: 0
+    retain: true
+    payload_open: "SHUTTEROPEN1"
+    payload_close: "SHUTTERCLOSE1"
+    payload_stop: "power1 OFF;power2 OFF"
+    state_open: "ON"
+    state_closed: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    optimistic: true
+    set_position_topic: 'cmnd/livingroom/shutterposition1'
+
+  - platform: mqtt
+    name: "Nappali ablak"
+    availability_topic: "tele/livingroom/LWT"
+    state_topic: "stat/livingroom/SHUTTER2"
+    command_topic: "cmnd/livingroom/backlog"
+#    value_template: '{{value_json.shutterposition2}}'
+    qos: 0
+    retain: true
+    payload_open: "SHUTTEROPEN2"
+    payload_close: "SHUTTERCLOSE2"
+    payload_stop: "power3 OFF; power4 OFF"
+    state_open: "ON"
+    state_closed: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    optimistic: true
+    set_position_topic: 'cmnd/livingroom/shutterposition2'
+
+  - platform: mqtt
+    name: "Kisszoba"
+    availability_topic: "tele/bedroom/LWT"
+    state_topic: "stat/bedroom/SHUTTER1"
+    command_topic: "cmnd/bedroom/backlog"
+ #   value_template: '{{value_json.shutterposition1}}'
+    qos: 0
+    retain: true
+    payload_open: "SHUTTEROPEN1"
+    payload_close: "SHUTTERCLOSE1"
+    payload_stop: "power1 OFF;power2 OFF"
+    state_open: "ON"
+    state_closed: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    optimistic: true
+    set_position_topic: 'cmnd/bedroom/shutterposition1'
+
+  - platform: mqtt
+    name: "Konyha"
+    availability_topic: "tele/kitchen/LWT"
+    state_topic: "stat/kitchen/SHUTTER1"
+    command_topic: "cmnd/kitchen/backlog"
+ #   value_template: '{{value_json.shutterposition1}}'
+    qos: 0
+    retain: true
+    payload_open: "SHUTTEROPEN1"
+    payload_close: "SHUTTERCLOSE1"
+    payload_stop: "power1 OFF;power2 OFF"
+    state_open: "ON"
+    state_closed: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    optimistic: true
+    set_position_topic: 'cmnd/kitchen/shutterposition1'
+
+  - platform: group
+    name: AllShutter
+    entities:
+        - cover.erkely_ajto
+        - cover.nappali_ablak
+        - cover.kisszoba
+        - cover.konyha

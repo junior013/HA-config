@@ -1,0 +1,13 @@
+# Track enabled phones
+- platform: owntracks_http
+  track_new_devices: true
+  max_gps_accuracy: 300
+  waypoints: True
+  secret: !secret owntracks_secret
+
+# Check hosts on Home Wifi
+- platform: unifi
+  username: !secret unifi_user
+  password: !secret unifi_pass
+  verify_ssl: false
+  consider_home: 60

@@ -1,0 +1,74 @@
+# - name: Movies
+#   entities:
+#     light.fuggony_led:
+#       state: on
+#       brightness: 20
+#       rgb_color:
+#         - 0
+#         - 0
+#         - 255
+#     light.jack_led: off
+
+# - name: Full light
+#   entities:
+#     light.fuggony_led:
+#       state: on
+#       brightness: 255
+#       rgb_color:
+#         - 255
+#         - 150
+#         - 50
+#     light.jack_led:
+#       state: on
+#       brightness: 255
+#       rgb_color:
+#         - 255
+#         - 150
+#         - 50
+
+# - name: Welcome
+#   entities:
+#     light.fuggony_led:
+#       state: on
+#       brightness: 100
+#       rgb_color:
+#         - 255
+#         - 255
+#         - 255
+#     light.jack_led:
+#       state: on
+#       brightness: 100
+#       rgb_color:
+#         - 255
+#         - 255
+#         - 255
+- name: covers_half
+  entities:
+    cover.erkely_ajto:
+      position: 50
+    cover.nappali_ablak:
+      position: 5
+    cover.konyha:
+      position: 50
+- name: covers_touch
+  entities:
+    cover.erkely_ajto:
+      position: 2
+    cover.nappali_ablak:
+      position: 3
+    cover.konyha:
+      position: 3
+    cover.kisszoba:
+      position: 3
+- name: covers_open
+  entities:
+    cover.erkely_ajto:
+      position: 100
+    cover.nappali_ablak:
+      position: 100
+    cover.konyha:
+      position: 100
+- name: covers_close
+  entities:
+    cover.allshutter:
+      position: 0
