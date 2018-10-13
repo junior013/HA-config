@@ -6,10 +6,9 @@ resources:
     type: module
   - url: /local/custom-lovelace/bignumber-card/bignumber-card.js
     type: js
-  - url: /local/custom-lovelace/gauge-card/gauge-card.js
-    type: js
   - url: /local/custom-lovelace/entity-attributes-card/entity-attributes-card.js?v=2
     type: js
+
 # Exclude entities from "Unused entities" view
 excluded_entities:
   - camera.vacuum_map
@@ -28,7 +27,6 @@ excluded_entities:
   - script.clean_hallway
   - script.clean_livingroom
   - script.clean_lobby
-  - entity_id: "device_tracker.*"
 
 excluded_domains:
   - device_tracker
@@ -254,10 +252,6 @@ views:
     icon: mdi:music
     theme: dark-mode
     cards:
-        # The picture entity card will represent an entity with a picture
-      # - type: picture-entity
-      #   image: https://www.home-assistant.io/images/default-social.png
-      #   entity: light.bed_light
       - entity: media_player.hifi
         type: media-control
       - entity: media_player.tv
@@ -437,89 +431,53 @@ views:
             border-color: rgb(255, 255, 255)
             background-color: rgb(54, 65, 78)
             opacity: 0.8
-        # - type: state-label
-        #   entity: sensor.vacuum_status
-        #   style:
-        #     top: 10%
-        #     left: 5%
-        #     color: rgb(255, 255, 255)
-        #     transform: translate(0%,-50%)
-        #     pointer-events: none
-        #     text-shadow: 1px 1px black
-        #     font-family: Trebuchet MS
-        #     font-size: 90%
-        #     font-weight: bold
-        #     border-left-style: solid
-        #     border-color: rgb(34, 154, 210)
-        #     background-color: rgb(54, 65, 78)
-        #     opacity: 0.8
-        # - type: state-label
-        #   entity: sensor.vacuum_battery
-        #   style:
-        #     top: 10%
-        #     right: 5%
-        #     color: rgb(255, 255, 255)
-        #     transform: translate(0%,-50%)
-        #     pointer-events: none
-        #     text-shadow: 1px 1px black
-        #     font-family: Trebuchet MS
-        #     font-size: 90%
-        #     font-weight: bold
-        #     border-right-style: solid
-        #     border-color: rgb(34, 154, 210)
-        #     background-color: rgb(54, 65, 78)
-        #     opacity: 0.8
       - type: horizontal-stack
         cards:
-        - type: custom:gauge-card
+        - type: gauge
           title: Főkefe
-          measurement: óra
+          unit_of_measurement: óra
           scale: 35px
-          entity: vacuum.xiaomi_vacuum_cleaner
-          attribute: main_brush_left
+          entity: sensor.vacuum_main_brush
           min: 0
           max: 300
           severity:
             red: 0
-            amber: 15
+            yellow: 15
             green: 50
-        - type: custom:gauge-card
+        - type: gauge
           title: Oldalkefe
-          measurement: óra
+          unit_of_measurement: óra
           scale: 35px
-          entity: vacuum.xiaomi_vacuum_cleaner
-          attribute: side_brush_left
+          entity: sensor.vacuum_side_brush
           min: 0
           max: 300
           severity:
             red: 0
-            amber: 15
+            yellow: 15
             green: 50
       - type: horizontal-stack
         cards:
-        - type: custom:gauge-card
+        - type: gauge
           title: HEPA
-          measurement: óra
+          unit_of_measurement: óra
           scale: 35px
-          entity: vacuum.xiaomi_vacuum_cleaner
-          attribute: filter_left
+          entity: sensor.vacuum_filter
           min: 0
           max: 300
           severity:
             red: 0
-            amber: 15
+            yellow: 15
             green: 50
-        - type: custom:gauge-card
+        - type: gauge
           title: Szenzor
-          measurement: óra
+          unit_of_measurement: óra
           scale: 35px
-          entity: vacuum.xiaomi_vacuum_cleaner
-          attribute: sensor_dirty_left
+          entity: sensor.vacuum_sensor_dirty
           min: 0
           max: 300
           severity:
             red: 0
-            amber: 15
+            yellow: 15
             green: 50
       - type: picture-entity
         entity: sensor.vacuum_status

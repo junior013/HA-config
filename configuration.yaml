@@ -1,45 +1,12 @@
 homeassistant:
-  name: Home
+  name: Juniors Home
   latitude: !secret home_lat
   longitude: !secret home_lon
   elevation: !secret home_elev
   unit_system: metric
   time_zone: Europe/Budapest
-#  auth_providers:
-#   - type: homeassistant
-#   - type: legacy_api_password
-  customize: !include customize.yaml
 
-# customze_glob:
-    # "*.*":
-    #   custom_ui_state_card: state-card-custom-ui
-#     sensor.yr_weather_wind_speed:
-#       state_card_mode: badges
-#     sensor.yr_weather_temperature:
-#       state_card_mode: badges
-#     sensor.yr_weather_humidity:
-#       state_card_mode: badges
-#     sensor.yr_weather_pressure:
-#       state_card_mode: badges
-#     sensor.yr_weather_fog:
-#       state_card_mode: badges
-#     sensor.yr_weather_cloudiness:
-#       state_card_mode: badges
-#     sensor.inner_temperature:
-#       state_card_mode: badges
-#     sensor.inner_humidity:
-#       state_card_mode: badges
-#     device_tracker.junior_3t:
-#       extra_badge:
-#         attribute: battery
-#         unit: '%'
-#     device_tracker.*:
-#       show_last_changed: true
-#     sun.sun:
-#       extra_badge:
-# #      extra_data_template: "kelte: ${attributes.next_rising|timestamp_local} nyugta: ${attributes.next_setting|timestamp_local}"
-#         attribute: elevation
-#         unit: '°'
+  customize: !include customize.yaml
 
 customizer:
   custom_ui: local
@@ -136,7 +103,6 @@ device_tracker: !include device_tracker.yaml
 light: !include_dir_merge_list lights/
 scene: !include inc/scenes.yaml
 sensor: !include_dir_merge_list sensors/
-#binary_sensor: !include inc/sonoff_rf.yaml
 switch: !include_dir_merge_list switches/
 cover: !include inc/covers.yaml
 
@@ -164,9 +130,6 @@ media_player:
   - platform: spotify
     client_id: !secret spotify_id
     client_secret: !secret spotify_secret
-#    aliases:
-#        abc123def456: 'Living Room'
-#        9183abas000: 'Bed Room'
   - platform: broadlink
     name: Hifi
     host: !secret ip_broadlink
@@ -187,6 +150,8 @@ group: !include groups.yaml
 automation: !include automations.yaml
 
 ### Teszt ####
+
+#binary_sensor: !include inc/sonoff_rf.yaml
 
 input_number: !include inc/inputs.yaml
 
