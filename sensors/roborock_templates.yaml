@@ -53,3 +53,9 @@
         friendly_name: "Vacuum - Sensor left"
         value_template: "{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.sensor_dirty_left }}"
         unit_of_measurement: 'hours'
+
+# Last map file URL
+  - platform: rest
+    resource: http://192.168.12.206/api/remote/map
+    name: Vacuum Map URL
+    value_template: 'http://192.168.12.206{{ value_json.mapsrc }}'

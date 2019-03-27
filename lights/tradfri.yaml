@@ -1,6 +1,6 @@
-- platform: tradfri
-  host: !secret ip_tradfri
-  allow_tradfri_groups: true
+#- platform: tradfri
+#  host: !secret ip_tradfri
+#  allow_tradfri_groups: true
 
 - platform: group
   name: Szoba

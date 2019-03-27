@@ -15,6 +15,9 @@ sensor.eloter_vezerlo_2:
 sensor.furdo_vezerlo:
   device_class: battery
 
+binary_sensor.door_bathroom:
+  device_class: door
+
 sensor.yr_weather_symbol:
   friendly_name: Nest
 sensor.yr_weather_wind_speed:

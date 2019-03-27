@@ -11,6 +11,11 @@ homeassistant:
 customizer:
   custom_ui: local
 
+system_health:
+
+lovelace:
+  mode: yaml
+
 http: !include inc/http.yaml
 
 mqtt:
@@ -85,6 +90,26 @@ conversation:
 
 # Enables support for tracking state changes over time.
 history:
+  exclude:
+    domains:
+      - camera
+      - automation
+      - weblink
+      - updater
+      - device_tracker
+  # include:
+  #   entities:
+  #     - device_tracker.junior_3t
+  #     - device_tracker.zsani_tel
+
+recorder:
+  exclude:
+    domains:
+      - camera
+      - media_player
+      - automation
+      - weblink
+      - updater
 
 # View all events in a logbook
 logbook:
@@ -109,20 +134,20 @@ cover: !include inc/covers.yaml
 vacuum:
   - platform: xiaomi_miio
     alias: Jolika
-    host: 192.168.12.206
-    token: !secret roborock_token
+    host: !secret ip_roborock
+    token: !secret key_roborock
+
+xiaomi_aqara:
+  gateways:
+    - host: !secret ip_aqara
+      mac: !secret mac_aqara
+      key: !secret key_aqara
 
 # Text to speech
 tts:
   platform: google
 
 media_player:
-#   - platform: samsungtv
-#     host: 192.168.12.242
-#     port: 8001
-#     name: TV direct
-# #   mac: 14:BB:6E:FF:17:43
-#     mac: FC:F1:36:B7:53:E1
   - platform: kodi
     host: !secret ip_kodi
     port: 80
@@ -151,7 +176,7 @@ automation: !include automations.yaml
 
 ### Teszt ####
 
-#binary_sensor: !include inc/sonoff_rf.yaml
+binary_sensor: !include inc/sonoff_rf.yaml
 
 input_number: !include inc/inputs.yaml
 
@@ -168,6 +193,9 @@ input_boolean:
   toclean_livingroom:
     name: Nappali takarítás
     initial: off
+  somebody_at_home:
+    name: Somebody entered Home zone
+    initial: off
 
 input_select:
   vacuum_fan_speed:
@@ -181,3 +209,6 @@ input_select:
     initial: Balanced
 
 script: !include inc/scripts.yaml
+
+smartthinq:
+  token: !secret key_smartthinq

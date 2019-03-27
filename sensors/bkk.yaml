@@ -1,0 +1,23 @@
+  - platform: bkk_stop
+    name: 'bkk_illyes'
+    stopId: 'BKK_F03058'
+    minsAfter: 25
+    route: '005'
+    # display vechicles leaving from station in
+    # the next <minsAfter> minutes.
+    # default: 20
+    wheelchair: false
+    # display vechicel's wheelchair accessibility.
+    # default: false
+    bikes: false 
+    # display whether bikes are allowed on
+    # vehicle. Default: false
+    ignoreNow: true
+    # ignore vehicles already in the station.
+    # default: true
+
+  - platform: bkk_stop
+    name: 'bkk_beller'
+    stopId: 'BKK_F03057'
+    minsAfter: 25
+    route: '196'

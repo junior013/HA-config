@@ -1,34 +1,65 @@
+# Helper sensors triggered by RF signals
+# - platform: mqtt
+#   name: RfKey1
+#   payload_on: 1
+#   payload_off: 0
+#   value_template: "{{ value_json.RfReceived.RfKey }}"
+#   state_topic: tele/rf-bridge/RESULT
+#   availability_topic: tele/rf-bridge/LWT
+#   payload_available: "Online"
+#   payload_not_available: "Offline"
+# - platform: mqtt
+#   name: RfKey2
+#   payload_on: 2
+#   payload_off: 0
+#   value_template: "{{ value_json.RfReceived.RfKey }}"
+#   state_topic: tele/rf-bridge/RESULT
+#   availability_topic: tele/rf-bridge/LWT
+#   payload_available: "Online"
+#   payload_not_available: "Offline"
+# - platform: mqtt
+#   name: RfKey3
+#   payload_on: 3
+#   payload_off: 0
+#   value_template: "{{ value_json.RfReceived.RfKey }}"
+#   state_topic: tele/rf-bridge/RESULT
+#   availability_topic: tele/rf-bridge/LWT
+#   payload_available: "Online"
+#   payload_not_available: "Offline"
+# - platform: mqtt
+#   name: RfKey4
+#   payload_on: 4
+#   payload_off: 0
+#   value_template: "{{ value_json.RfReceived.RfKey }}"
+#   state_topic: tele/rf-bridge/RESULT
+#   availability_topic: tele/rf-bridge/LWT
+#   payload_available: "Online"
+#   payload_not_available: "Offline"
+# - platform: mqtt
+#   name: RfKey14
+#   device_class: door
+#   payload_on: 14
+#   payload_off: 0
+#   value_template: "{{ value_json.RfReceived.RfKey }}"
+#   state_topic: tele/rf-bridge/RESULT
+#   availability_topic: tele/rf-bridge/LWT
+#   payload_available: "Online"
+#   payload_not_available: "Offline"
 - platform: mqtt
-  name: RfKey1
-  payload_on: 1
-  payload_off: 1
+  name: RfKey15
+  device_class: door
+  payload_on: 15
+  payload_off: 0
   value_template: "{{ value_json.RfReceived.RfKey }}"
   state_topic: tele/rf-bridge/RESULT
   availability_topic: tele/rf-bridge/LWT
   payload_available: "Online"
   payload_not_available: "Offline"
 - platform: mqtt
-  name: RfKey2
-  payload_on: 2
-  payload_off: 2
-  value_template: "{{ value_json.RfReceived.RfKey }}"
-  state_topic: tele/rf-bridge/RESULT
-  availability_topic: tele/rf-bridge/LWT
-  payload_available: "Online"
-  payload_not_available: "Offline"
-- platform: mqtt
-  name: RfKey3
-  payload_on: 3
-  payload_off: 3
-  value_template: "{{ value_json.RfReceived.RfKey }}"
-  state_topic: tele/rf-bridge/RESULT
-  availability_topic: tele/rf-bridge/LWT
-  payload_available: "Online"
-  payload_not_available: "Offline"
-- platform: mqtt
-  name: RfKey4
-  payload_on: 4
-  payload_off: 4
+  name: RfKey16
+  device_class: motion
+  payload_on: 16
+  payload_off: 0
   value_template: "{{ value_json.RfReceived.RfKey }}"
   state_topic: tele/rf-bridge/RESULT
   availability_topic: tele/rf-bridge/LWT

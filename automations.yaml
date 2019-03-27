@@ -1,13 +1,31 @@
 
 # Device tracker triggered automations
-- id: scene_anybody_home
-  alias: Scene set when anybody arrives home
+- id: is_anybody_home
+  alias: Set a tag, anybody entering home zone
   trigger:
     platform: state
     to: home
     entity_id:
       - device_tracker.junior_3t
       - device_tracker.zsani_tel
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.somebody_at_home
+
+- id: scene_anybody_home
+  alias: Scene set when anybody arrives home
+  initial_state: off
+  trigger:
+    platform: mqtt
+    topic: "tele/rf-bridge/RESULT"
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: '{{ trigger.payload_json.RfReceived.RfKey == 15 }}'
+      - condition: state
+        entity_id: input_boolean.somebody_at_home
+        state: 'on'
   action:
     - service: automation.turn_off
       entity_id: automation.scene_set_when_anybody_arrives_home
@@ -38,6 +56,8 @@
   action:
     - service: automation.turn_on
       entity_id: automation.scene_set_when_anybody_arrives_home
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.somebody_at_home
     - service: scene.turn_on
       entity_id: scene.covers_touch
     - service: light.turn_off
@@ -63,6 +83,9 @@
     service: switch.turn_off
 
 # Automations triggered by RF433 signals
+
+# Juniors remote
+
 - id: scene_by_rfkey1
   alias: Morning scene by remote key A
   trigger:
@@ -76,7 +99,6 @@
       entity_id: media_player.hifi
     - service: script.cover_open_if_sun_above_horizon
     - service: script.minimal_light_if_sun_below_horizon
-
 
 - id: scene_by_rfkey2
   alias: Close covers by remote key B
@@ -114,6 +136,50 @@
     service: scene.turn_on
     entity_id: scene.covers_close
 
+# Zsanis remote
+
+- id: scene_by_rfkey5
+  alias: Toggle bedroom light by A
+  trigger:
+    platform: mqtt
+    topic: "tele/rf-bridge/RESULT"
+  condition:
+    condition: template
+    value_template: '{{ trigger.payload_json.RfReceived.RfKey == 5 }}'
+  action:
+    service: light.toggle
+    entity_id: light.bedroom
+
+- id: scene_by_rfkey6
+  alias: Open bedroom cover by remote key B
+  trigger:
+    platform: mqtt
+    topic: "tele/rf-bridge/RESULT"
+  condition:
+    condition: template
+    value_template: '{{ trigger.payload_json.RfReceived.RfKey == 6 }}'
+  action:
+    service: cover.set_cover_position
+    entity_id: cover.kisszoba
+    data:
+      position: 50
+
+- id: scene_by_rfkey8
+  alias: Close bedroom cover by remote key D
+  trigger:
+    platform: mqtt
+    topic: "tele/rf-bridge/RESULT"
+  condition:
+    condition: template
+    value_template: '{{ trigger.payload_json.RfReceived.RfKey == 8 }}'
+  action:
+    service: cover.set_cover_position
+    entity_id: cover.kisszoba
+    data:
+      position: 3
+
+# Sensors
+
 - id: scene_by_rfkey16
   alias: Hallway light by motion detector
   trigger:
@@ -127,3 +193,55 @@
       entity_id: sun.sun
       state: below_horizon
     - service: script.hallway_light_on_for_time
+
+# Reset RF signal based helper sensors 3sec after trigger
+- id: reset_rf_sensors
+  alias: Reset RF sensors state
+  trigger:
+    platform: mqtt
+    topic: "tele/rf-bridge/RESULT"
+  condition:
+    condition: template
+    value_template: '{{ trigger.payload_json.RfReceived.RfKey > 0 }}'
+  action:
+    - delay:
+        seconds: 3
+    - service: mqtt.publish
+      data: { "topic" : "tele/rf-bridge/RESULT", "payload" : '{ "RfReceived" : { "RfKey" : 0 }}' }
+
+# Aqara
+
+- id: bedlight_by_xiaomi_button
+  alias: Bed light by Xiaomi button
+  trigger:
+    platform: event
+    event_type: xiaomi_aqara.click
+    event_data:
+      entity_id: binary_sensor.switch_aqara
+      click_type: single
+  action:
+    service: light.toggle
+    entity_id: light.livingroom_bedlight
+
+- id: roomlight_by_xiaomi_button
+  alias: Livingroom light by Xiaomi button
+  trigger:
+    platform: event
+    event_type: xiaomi_aqara.click
+    event_data:
+      entity_id: binary_sensor.switch_aqara
+      click_type: double
+  action:
+    service: light.toggle
+    entity_id: light.szoba
+
+- id: bright_light_by_xiaomi_button
+  alias: Bright light by Xiaomi button
+  trigger:
+    platform: event
+    event_type: xiaomi_aqara.click
+    event_data:
+      entity_id: binary_sensor.switch_aqara
+      click_type: long_click_press
+  action:
+    service: light.turn_off

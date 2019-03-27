@@ -45,11 +45,11 @@
 - name: covers_half
   entities:
     cover.erkely_ajto:
-      position: 50
+      position: 60
     cover.nappali_ablak:
-      position: 5
+      position: 10
     cover.konyha:
-      position: 50
+      position: 60
 - name: covers_touch
   entities:
     cover.erkely_ajto:

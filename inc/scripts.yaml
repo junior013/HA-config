@@ -6,35 +6,42 @@ clean_livingroom:
       data:
         entity_id: vacuum.xiaomi_vacuum_cleaner
         command: app_zoned_clean
-        params: [[22740,24530,27560,27830,1]]
+        params: [[23000, 24900, 27850, 28300, 1]]
 clean_hallway:
   sequence:
     - service: vacuum.send_command
       data:
         entity_id: vacuum.xiaomi_vacuum_cleaner
         command: app_zoned_clean
-        params: [[28000,29000,30100,29700,1]]
+        params: [[27850, 28450, 30000, 29300, 1]]
 clean_diningroom:
   sequence:
     - service: vacuum.send_command
       data:
         entity_id: vacuum.xiaomi_vacuum_cleaner
         command: app_zoned_clean
-        params: [[28100,25300,30800,28600,1]]
+        params: [[28100, 24950, 30700, 28300, 1]]
+clean_bedroom:
+  sequence:
+    - service: vacuum.send_command
+      data:
+        entity_id: vacuum.xiaomi_vacuum_cleaner
+        command: app_zoned_clean
+        params: [[23150, 28600, 27800, 31100, 1]]
 clean_lobby:
   sequence:
     - service: vacuum.send_command
       data:
         entity_id: vacuum.xiaomi_vacuum_cleaner
         command: app_zoned_clean
-        params: [[30900,25200,33800,26200,1]]
-clean_multi:
+        params: [[30900, 24900, 33600, 25900, 1]]
+clean_kitchen:
   sequence:
     - service: vacuum.send_command
       data:
         entity_id: vacuum.xiaomi_vacuum_cleaner
         command: app_zoned_clean
-        params: [[30900,25200,33800,26200,1],[28100,25300,30800,28600,1]]
+        params: [[31600, 26350, 33700, 27800, 1]]
 clean_selected:
   sequence:
     - service: vacuum.send_command
@@ -51,9 +58,17 @@ minimal_light_if_sun_below_horizon:
       entity_id: sun.sun
       state: below_horizon
     - service: light.turn_on
-      entity_id: light.eloterek_2
+      entity_id: light.eloterek
       data:
         brightness_pct: 5
+    - condition: state
+      state: home
+      entity_id: device_tracker.junior_3t
+    - service: light.turn_on
+      entity_id: light.szoba
+      data:
+        brightness_pct: 5
+
 
 cover_open_if_sun_above_horizon:              
   sequence:
@@ -79,4 +94,3 @@ hallway_light_on_for_time:
       data:
         brightness: 0
         transition: 3
-
