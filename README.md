@@ -1,5 +1,5 @@
 # HA-config
-Home Assistant configuration (for v0.90.2)
+Home Assistant configuration (for v2022.2.2)
 
 Primary a backup
 
