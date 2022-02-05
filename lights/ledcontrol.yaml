@@ -1,4 +1,0 @@
-  - platform: flux_led
-    devices:
-      192.168.12.201:
-        name: livingroom_bedlight
