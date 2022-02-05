@@ -1,106 +1,67 @@
-homeassistant:
+﻿homeassistant:
   name: Juniors Home
   latitude: !secret home_lat
   longitude: !secret home_lon
   elevation: !secret home_elev
   unit_system: metric
   time_zone: Europe/Budapest
-
   customize: !include customize.yaml
+  customize_glob: !include customize_glob.yaml
+  external_url: !secret my_url
+  internal_url: !secret my_url
+  auth_providers:
+    - type: trusted_networks
+      trusted_networks:
+        - 192.168.12.0/24
+        - 127.0.0.1
+    - type: homeassistant
 
-customizer:
-  custom_ui: local
+#customizer:
+#  custom_ui: local
+
+mqtt:
+  discovery: true
+  discovery_prefix: homeassistant
 
 system_health:
 
 lovelace:
-  mode: yaml
+#  mode: yaml
 
 http: !include inc/http.yaml
 
-mqtt:
-  embedded:
-  password: !secret api_pass
-
 frontend:
-  themes:
-    dark:
-      # Main Stuff #
-      primary-color: "#1ABA92" # Primary (most of the UI)
-      primary-background-color: "#303030" # Primary background colour (dialogs, e.t.c)
-      secondary-background-color: "#303030" # Secondary background colour (main UI background)
-      paper-card-background-color: "#424242" # Card background colour
-      paper-item-icon-color: "#1ABA92" # Icon colour
-      primary-text-color: "#FFFFFF" # Primary text colour
-      secondary-text-color: "rgba(255, 255, 255, 0.7)" # Secondary text colour
-      disabled-text-color: "rgba(255, 255, 255, 0.5)" # Disabled text colour
-      divider-color: "rgba(255, 255, 255, 0.12)" # Divider colour
-      paper-card-header-color: "#FFFFFF" # Card header text colour
-
-      # Nav Menu #
-      paper-listbox-background-color: "#424242" # Listbox background colour
-      paper-listbox-color: "#FFFFFF" # Listbox text colour
-      paper-grey-200: "#616161" # Listbox selected item background colour
-
-      # Switches #
-      paper-toggle-button-checked-ink-color: "#1ABA92"
-      paper-toggle-button-checked-button-color: "#1ABA92"
-      paper-toggle-button-checked-bar-color: "#1ABA92"
-
-      # Sliders #
-      paper-slider-knob-color: "#1ABA92"
-      paper-slider-knob-start-color: "#1ABA92"
-      paper-slider-pin-color: "#1ABA92"
-      paper-slider-active-color: "#1ABA92"
-      paper-slider-secondary-color: "#33F2D8"
+  themes: !include themes.yaml
   extra_html_url:
     - /local/custom_ui/state-card-custom-ui.html
   extra_html_url_es5:
     - /local/custom_ui/state-card-custom-ui-es5.html
 
-panel_custom:
-  - name: floorplan
-    sidebar_title: Floorplan
-    sidebar_icon: mdi:home
-    url_path: floorplan
-    config: !include floorplan.yaml
-
-# Enables configuration UI
 config:
 
-cloud:
-  google_actions:
-    filter:
-      include_domains:
-        - switch
-        - light
-        - cover
-        - script
+mobile_app:
 
-map:
+wake_on_lan:
 
 updater:
   include_used_components: true
 
-# Discover some devices automatically
 discovery:
+  # enable:
+  #   - homekit
 
-# Allows you to issue voice commands from the frontend in enabled browsers
-conversation:
+influxdb:
+  host: localhost
+  port: 8086
+  ssl: false
+  database: home_assistant
+  username: hassio
+  password: hassio
 
-# Enables support for tracking state changes over time.
 history:
   exclude:
     domains:
-      - camera
-      - automation
-      - weblink
-      - updater
       - device_tracker
-  # include:
-  #   entities:
-  #     - device_tracker.junior_3t
-  #     - device_tracker.zsani_tel
 
 recorder:
   exclude:
@@ -110,32 +71,42 @@ recorder:
       - automation
       - weblink
       - updater
+      - cover
+      - input_number
+      - input_boolean
+    entity_globs:
+      - binary_sensor.*_charging
+      - sensor.*_rx
+      - sensor.*_tx
+      - sensor.transmission_*
+      - switch.transmission_*
+      - sensor.*battery*
+    entities:
+      - binary_sensor.updater  
+      - sensor.hacs
 
-# View all events in a logbook
 logbook:
 
-# Track the sun
 sun:
   name: Sun
 
-weather:
-  - platform: openweathermap
-    api_key: !secret openweathermap_api
-#    mode: daily
-
 zone: !include inc/zones.yaml
-device_tracker: !include device_tracker.yaml
 light: !include_dir_merge_list lights/
-scene: !include inc/scenes.yaml
 sensor: !include_dir_merge_list sensors/
 switch: !include_dir_merge_list switches/
 cover: !include inc/covers.yaml
+scene: !include inc/scenes.yaml
 
-vacuum:
-  - platform: xiaomi_miio
-    alias: Jolika
-    host: !secret ip_roborock
-    token: !secret key_roborock
+nissan_leaf:
+  username: !secret nissan_user
+  password: !secret nissan_pass
+  region: "NE"
+  update_interval:
+    hours: 3
+  update_interval_charging:
+    minutes: 30
+  update_interval_climate:
+    minutes: 15
 
 xiaomi_aqara:
   gateways:
@@ -143,72 +114,48 @@ xiaomi_aqara:
       mac: !secret mac_aqara
       key: !secret key_aqara
 
-# Text to speech
-tts:
-  platform: google
+webostv:
+  host: 192.168.12.242
+  name: TV
+  turn_on_action:
+    service: wake_on_lan.send_magic_packet
+    data:
+      mac: "64:95:6C:1C:6F:B7"
+  customize:
+    sources:
+      - kodi
+      - youtube
+      - spotify
+      - netflix
 
-media_player:
-  - platform: kodi
-    host: !secret ip_kodi
-    port: 80
-    name: Kodi
-  - platform: spotify
-    client_id: !secret spotify_id
-    client_secret: !secret spotify_secret
-  - platform: broadlink
-    name: Hifi
-    host: !secret ip_broadlink
-    mac: !secret mac_broadlink
-    ircodes_ini: 'broadlink_ir_codes/philips-hifi.ini'
-  - platform: broadlink
-    name: TV
-    host: !secret ip_broadlink
-    mac: !secret mac_broadlink
-    ircodes_ini: 'broadlink_ir_codes/samsung.ini'
-    ping_host: !secret ip_samsung-tv
+spotify:
+  client_id: !secret spotify_id
+  client_secret: !secret spotify_secret
 
 ffmpeg:
 
 camera: !include inc/cameras.yaml
 
-group: !include groups.yaml
 automation: !include automations.yaml
-
-### Teszt ####
-
-binary_sensor: !include inc/sonoff_rf.yaml
 
 input_number: !include inc/inputs.yaml
 
 input_boolean:
-  toclean_lobby:
-    name: Előszoba takarítás
+  toclean_common:
+    name: Clean common places
     initial: off
-  toclean_hallway:
-    name: Közlekedő takarítás
+  toclean_kitchen:
+    name: Clean the kitchen
     initial: off
-  toclean_diningroom:
-    name: Étkező takarítás
+  toclean_bedroom:
+    name: Clean the bedroom
     initial: off
   toclean_livingroom:
-    name: Nappali takarítás
+    name: Clean the livingroom
     initial: off
   somebody_at_home:
     name: Somebody entered Home zone
     initial: off
 
-input_select:
-  vacuum_fan_speed:
-    name: Szívóerő
-    options:
-      - Mop
-      - Quiet
-      - Balanced
-      - Turbo
-      - MAX
-    initial: Balanced
-
-script: !include inc/scripts.yaml
-
-smartthinq:
-  token: !secret key_smartthinq
+script: !include scripts.yaml
+timer: !include inc/timers.yaml
