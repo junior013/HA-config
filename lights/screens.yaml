@@ -1,0 +1,5 @@
+- platform: group
+  name: Tablet Screens
+  entities:
+    - light.falipanel_etkez_screen
+    - light.falipanel_bejarat_screen

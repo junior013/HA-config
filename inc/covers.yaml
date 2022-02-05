@@ -4,7 +4,6 @@
     position_topic: "stat/livingroom/SHUTTER1"
     command_topic: "cmnd/livingroom/backlog"
     qos: 0
-    retain: true
     payload_open: "SHUTTEROPEN1"
     payload_close: "SHUTTERCLOSE1"
     payload_stop: "power1 OFF;power2 OFF"
@@ -12,7 +11,6 @@
     state_closed: "OFF"
     payload_available: "Online"
     payload_not_available: "Offline"
-    optimistic: true
     set_position_topic: 'cmnd/livingroom/shutterposition1'
 
   - platform: mqtt
@@ -22,7 +20,6 @@
     command_topic: "cmnd/livingroom/backlog"
 #    value_template: '{{value_json.shutterposition2}}'
     qos: 0
-    retain: true
     payload_open: "SHUTTEROPEN2"
     payload_close: "SHUTTERCLOSE2"
     payload_stop: "power3 OFF; power4 OFF"
@@ -30,7 +27,6 @@
     state_closed: "OFF"
     payload_available: "Online"
     payload_not_available: "Offline"
-    optimistic: true
     set_position_topic: 'cmnd/livingroom/shutterposition2'
 
   - platform: mqtt
@@ -40,7 +36,6 @@
     command_topic: "cmnd/bedroom/backlog"
  #   value_template: '{{value_json.shutterposition1}}'
     qos: 0
-    retain: true
     payload_open: "SHUTTEROPEN1"
     payload_close: "SHUTTERCLOSE1"
     payload_stop: "power1 OFF;power2 OFF"
@@ -48,7 +43,6 @@
     state_closed: "OFF"
     payload_available: "Online"
     payload_not_available: "Offline"
-    optimistic: true
     set_position_topic: 'cmnd/bedroom/shutterposition1'
 
   - platform: mqtt
@@ -58,7 +52,6 @@
     command_topic: "cmnd/kitchen/backlog"
  #   value_template: '{{value_json.shutterposition1}}'
     qos: 0
-    retain: true
     payload_open: "SHUTTEROPEN1"
     payload_close: "SHUTTERCLOSE1"
     payload_stop: "power1 OFF;power2 OFF"
@@ -66,7 +59,6 @@
     state_closed: "OFF"
     payload_available: "Online"
     payload_not_available: "Offline"
-    optimistic: true
     set_position_topic: 'cmnd/kitchen/shutterposition1'
 
   - platform: group
@@ -76,3 +68,18 @@
         - cover.nappali_ablak
         - cover.kisszoba
         - cover.konyha
+
+  - platform: mqtt
+    name: Window
+    availability_topic: "tele/bedroom/LWT"
+    position_topic: "stat/bedroom/SHUTTER2"
+    command_topic: "cmnd/bedroom/backlog"
+    qos: 0
+    payload_open: "SHUTTEROPEN2"
+    payload_close: "SHUTTERCLOSE2"
+    payload_stop: "power3 OFF; power4 OFF"
+    state_open: "ON"
+    state_closed: "OFF"
+    payload_available: "Online"
+    payload_not_available: "Offline"
+    set_position_topic: 'cmnd/bedroom/shutterposition2'

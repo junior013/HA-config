@@ -1,74 +1,95 @@
-# - name: Movies
-#   entities:
-#     light.fuggony_led:
-#       state: on
-#       brightness: 20
-#       rgb_color:
-#         - 0
-#         - 0
-#         - 255
-#     light.jack_led: off
-
-# - name: Full light
-#   entities:
-#     light.fuggony_led:
-#       state: on
-#       brightness: 255
-#       rgb_color:
-#         - 255
-#         - 150
-#         - 50
-#     light.jack_led:
-#       state: on
-#       brightness: 255
-#       rgb_color:
-#         - 255
-#         - 150
-#         - 50
-
-# - name: Welcome
-#   entities:
-#     light.fuggony_led:
-#       state: on
-#       brightness: 100
-#       rgb_color:
-#         - 255
-#         - 255
-#         - 255
-#     light.jack_led:
-#       state: on
-#       brightness: 100
-#       rgb_color:
-#         - 255
-#         - 255
-#         - 255
 - name: covers_half
   entities:
     cover.erkely_ajto:
-      position: 60
+      state: open
+      current_position: 70
     cover.nappali_ablak:
-      position: 10
+      state: open
+      current_position: 3
     cover.konyha:
-      position: 60
+      state: open
+      current_position: 70
+#    cover.kisszoba:
+#      current_position: 50
 - name: covers_touch
   entities:
     cover.erkely_ajto:
-      position: 2
+      state: open
+      current_position: 2
     cover.nappali_ablak:
-      position: 3
+      state: open
+      current_position: 3
     cover.konyha:
-      position: 3
-    cover.kisszoba:
-      position: 3
+      state: open
+      current_position: 3
+#    cover.kisszoba:
+#      current_position: 3
 - name: covers_open
   entities:
+#    cover.allshutter:
+#      current_position: 100
     cover.erkely_ajto:
-      position: 100
+      state: open
+#      current_position: 100
     cover.nappali_ablak:
-      position: 100
+      state: open
+#      current_position: 100
     cover.konyha:
-      position: 100
+      state: open
+#      current_position: 100
 - name: covers_close
   entities:
     cover.allshutter:
-      position: 0
+      state: close
+#      current_position: 0
+#    cover.erkely_ajto:
+#      state: close
+#      current_position: 0
+#    cover.nappali_ablak:
+#      state: close
+#      current_position: 0
+#    cover.konyha:
+#      state: close
+#      current_position: 0
+
+# Livingroom cover scenes
+- name: covers_livingroom_touch
+  entities:
+    cover.erkely_ajto:
+      state: open
+      current_position: 2
+    cover.nappali_ablak:
+      state: open
+      current_position: 3
+- name: covers_livingroom_open
+  entities:
+    cover.erkely_ajto:
+      state: open
+      current_position: 80
+    cover.nappali_ablak:
+      state: open
+      current_position: 10
+
+# Bedroom cover scenes
+- name: covers_bedroom_touch
+  entities:
+    cover.kisszoba:
+      state: open
+      current_position: 6
+- name: covers_bedroom_open
+  entities:
+    cover.kisszoba:
+      state: open
+#      current_position: 100
+
+# Kitchen cover scenes
+- name: covers_kitchen_touch
+  entities:
+    cover.konyha:
+      state: open
+      current_position: 3
+- name: covers_kitchen_open
+  entities:
+    cover.konyha:
+      state: open
+      current_position: 70

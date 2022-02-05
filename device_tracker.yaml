@@ -1,6 +1,0 @@
-# Check hosts on Home Wifi
-- platform: unifi
-  username: !secret unifi_user
-  password: !secret unifi_pass
-  verify_ssl: false
-  consider_home: 120

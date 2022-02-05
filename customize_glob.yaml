@@ -1,0 +1,11 @@
+input_boolean.toclean_*:
+  templates:
+    icon: >
+      if (state === 'on') return 'mdi:broom';
+      return 'mdi:minus-circle-outline';
+
+binary_sensor.door_*:
+  device_class: door
+
+cover.*:
+  device_class: shutter

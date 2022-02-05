@@ -1,0 +1,103 @@
+# Dynamic cleaning scripts
+vacuum_zones_cleanup:
+  alias: "Clean up selected zones"
+  sequence:
+    - service: vacuum.send_command
+      data_template:
+        entity_id: vacuum.xiaomi_vacuum_cleaner
+        command: zoned_cleanup
+        params:
+          'zone_ids':
+            - "{%- if states('input_boolean.toclean_livingroom') == 'on' %}Livingroom{% endif %}"
+            - "{%- if states('input_boolean.toclean_bedroom') == 'on' %}Bedroom{% endif %}"
+            - "{%- if states('input_boolean.toclean_common') == 'on' %}Common{% endif %}"
+            - "{%- if states('input_boolean.toclean_kitchen') == 'on' %}Kitchen{% endif %}"
+
+vacuum_zones_vacuum:
+  alias: "Vacuum selected zones"
+  sequence:
+    - service: vacuum.set_fan_speed
+      data:
+        entity_id: vacuum.xiaomi_vacuum_cleaner
+        fan_speed: 'max'
+    - service: script.vacuum_zones_cleanup
+
+vacuum_zones_mop:
+  alias: "Vacuum selected zones"
+  sequence:
+    - service: vacuum.set_fan_speed
+      data:
+        entity_id: vacuum.xiaomi_vacuum_cleaner
+        fan_speed: 'mop'
+    - service: script.vacuum_zones_cleanup
+
+vacuum_goto_dustbin:
+  alias: "Go to the dustbin"
+  sequence:
+    - service: vacuum.send_command
+      data:
+        entity_id: vacuum.xiaomi_vacuum_cleaner
+        command: go_to
+        params:
+          'spot_id': 'Dustbin'
+
+# Automation helper scripts
+minimal_light_if_sun_below_horizon:
+  sequence:
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
+    - service: light.turn_on
+      entity_id: light.eloterek
+      data:
+        brightness_pct: 5
+    - condition: state
+      state: home
+      entity_id: person.izer_nandor_jr
+    - service: light.turn_on
+      entity_id: light.szoba
+      data:
+        brightness_pct: 5
+
+
+cover_open_if_sun_above_horizon:              
+  sequence:
+    - condition: state
+      entity_id: sun.sun
+      state: above_horizon
+    - service: scene.turn_on
+      entity_id: scene.covers_half
+
+hallway_light_on_for_time:
+  sequence:
+    - condition: state
+      entity_id: light.szelfogo
+      state: 'off'
+    - service: light.turn_on
+      entity_id: light.szelfogo
+      data:
+        brightness_pct: 10
+    - delay:
+        seconds: 15
+    - condition: state
+      entity_id: light.etkezo
+      state: 'off'
+    - service: light.turn_on
+      entity_id: light.szelfogo
+      data:
+        brightness: 0
+        transition: 3
+
+# Nissan LEAF helper scripts
+leaf_charge:
+  alias: Start charging
+  sequence:
+    - service: nissan_leaf.start_charge
+      data:
+        vin: !secret nissan_leaf_vin
+leaf_update:
+  alias: Update status
+  sequence:          
+    - service: nissan_leaf.update
+      data:
+        vin: !secret nissan_leaf_vin

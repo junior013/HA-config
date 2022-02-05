@@ -5,14 +5,14 @@
     sensors:
       vacuum_status:
         friendly_name: "Vacuum - Status"
-        value_template: "Status: {{ states.vacuum.xiaomi_vacuum_cleaner.state }} [{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.cleaned_area }}m² in {{ states.vacuum.xiaomi_vacuum_cleaner.attributes.cleaning_time }}']"
+        value_template: "Status: {{ states.vacuum.jolika.state }} [{{ states.vacuum.jolika.attributes.lastCleanedArea }}m² in {{ states.vacuum.jolika.attributes.lastCleaningTime }}']"
 
 # Battery status string
   - platform: template
     sensors:
       vacuum_battery:
         friendly_name: "Vacuum - Battery"
-        value_template: "Battery: {{ states.vacuum.xiaomi_vacuum_cleaner.attributes.battery_level }}"
+        value_template: "Battery: {{ states.vacuum.jolika.attributes.battery_level }}"
         device_class: battery
         unit_of_measurement: '%'
 
@@ -21,7 +21,7 @@
     sensors:
       vacuum_battery_level:
         friendly_name: "Vacuum - Battery level"
-        value_template: "{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.battery_level }}"
+        value_template: "{{ states.vacuum.jolika.attributes.battery_level }}"
         device_class: battery
         unit_of_measurement: '%'
 
@@ -30,32 +30,38 @@
     sensors:
       vacuum_main_brush:
         friendly_name: "Vacuum - Main brush left"
-        value_template: "{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.main_brush_left }}"
+        value_template: "{{ states.vacuum.jolika.attributes.mainBrush }}"
         unit_of_measurement: 'hours'
 
   - platform: template
     sensors:
       vacuum_side_brush:
         friendly_name: "Vacuum - Side brush left"
-        value_template: "{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.side_brush_left }}"
+        value_template: "{{ states.vacuum.jolika.attributes.sideBrush }}"
         unit_of_measurement: 'hours'
 
   - platform: template
     sensors:
       vacuum_filter:
         friendly_name: "Vacuum - Filter left"
-        value_template: "{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.filter_left }}"
+        value_template: "{{ states.vacuum.jolika.attributes.filter }}"
         unit_of_measurement: 'hours'
 
   - platform: template
     sensors:
       vacuum_sensor_dirty:
         friendly_name: "Vacuum - Sensor left"
-        value_template: "{{ states.vacuum.xiaomi_vacuum_cleaner.attributes.sensor_dirty_left }}"
+        value_template: "{{ states.vacuum.jolika.attributes.sensor }}"
         unit_of_measurement: 'hours'
 
 # Last map file URL
-  - platform: rest
-    resource: http://192.168.12.206/api/remote/map
-    name: Vacuum Map URL
-    value_template: 'http://192.168.12.206{{ value_json.mapsrc }}'
+  # - platform: rest
+  #   resource: http://192.168.12.206/api/remote/map
+  #   name: Vacuum Map URL
+  #   value_template: 'http://192.168.12.206{{ value_json.mapsrc }}'
+
+  # - platform: mqtt
+  #   state_topic: "valetudo/jolika/state"
+  #   json_attributes_topic: "valetudo/jolika/map_data"
+  #   name: jolika_map
+  #   value_template: 'OK'

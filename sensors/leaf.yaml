@@ -1,0 +1,15 @@
+  - platform: template
+    sensors:
+      leaf_state:
+        value_template: "Charge: {{ states('binary_sensor.leaf1juni_charging_status') }}"
+      leaf_range_ac:
+        unit_of_measurement: 'km'
+        value_template: "A/C range: {{ states('sensor.leaf1juni_range_ac') }}"
+      leaf_range: 
+        unit_of_measurement: 'km'
+        value_template: "Range: {{ states('sensor.leaf1juni_range') }}"
+      leaf_battery:
+#        friendly_name: "Battery"
+        unit_of_measurement: '%'
+        value_template: "Charge: {{ states('sensor.leaf1juni_charge') }}"
+        icon_template: "{%- if states.sensor.leaf1juni_charge.state >= '95' %}mdi:battery{%- elif states.sensor.leaf1juni_charge.state == '100' %}mdi:battery{%- elif states.sensor.leaf1juni_charge.state <= '15' %}mdi:battery-outline{% else %}mdi:battery-{{(states.sensor.leaf1juni_charge.state|float / 10)|round*10}}{%- endif %}"

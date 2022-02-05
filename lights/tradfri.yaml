@@ -2,13 +2,13 @@
 #  host: !secret ip_tradfri
 #  allow_tradfri_groups: true
 
-- platform: group
-  name: Szoba
-  entities:
-    - light.izzo_1
-    - light.izzo_2
-    - light.izzo_3
-    - light.izzo_4
+# - platform: group
+#   name: Szoba
+#   entities:
+#     - light.Living_LB1
+#     - light.Living_LB2
+#     - light.Living_LB3
+#     - light.Living_LB4
 
 - platform: group
   name: Eloterek
@@ -16,4 +16,17 @@
     - light.szelfogo
     - light.etkezo
     - light.kozlekedo
+#    - light.konyha
 
+- platform: group
+  name: Halo
+  entities:
+    - light.spot_1
+    - light.spot_2
+    - light.spot_3
+
+- platform: group
+  name: offgroup
+  entities:
+    - light.szoba
+    - light.eloterek
