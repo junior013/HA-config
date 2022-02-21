@@ -1,45 +1,145 @@
+# Morning routine
+morning_routine:
+  alias: Morning routine
+  sequence:
+    - delay:
+        hours: 0
+        minutes: 10
+        seconds: 0
+        milliseconds: 0
+    - service: media_player.volume_set
+      data:
+        volume_level: 0.01
+      target:
+        entity_id: media_player.sonos_beam
+    - service: media_player.select_source
+      data:
+        source: Rocker Rádió
+      target:
+        entity_id: media_player.sonos_beam
+    - repeat:
+        count: '4'
+        sequence:
+          - delay:
+              hours: 0
+              minutes: 1
+              seconds: 0
+              milliseconds: 0
+          - service: media_player.volume_up
+            data: {}
+            target:
+              entity_id: media_player.sonos_beam
+    - delay:
+        hours: 0
+        minutes: 1
+        seconds: 0
+        milliseconds: 0
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: sun.sun
+              state: above_horizon
+          sequence:
+            - service: scene.turn_on
+              data: {}
+              target:
+                entity_id: scene.covers_kitchen_day
+      default:
+        - service: light.turn_on
+          data:
+            transition: 120
+            brightness_pct: 50
+            color_temp: 420
+          target:
+            entity_id: light.konyha
+    - service: light.turn_on
+      target:
+        entity_id: light.tablet_screens
+    - delay:
+        hours: 0
+        minutes: 5
+        seconds: 0
+        milliseconds: 0
+    - service: switch.turn_on
+      target:
+        entity_id: switch.coffee
+    - choose:
+        - conditions:
+            - condition: state
+              entity_id: sun.sun
+              state: above_horizon
+          sequence:
+            - service: scene.turn_on
+              data: {}
+              target:
+                entity_id: scene.covers_livingroom_day
+      default:
+        - service: light.turn_on
+          data:
+            transition: 120
+            brightness_pct: 50
+            color_temp: 420
+          target:
+            entity_id: light.eloterek
+    - delay:
+        hours: 0
+        minutes: 5
+        seconds: 0
+        milliseconds: 0
+    - service: sonos.join
+      data:
+        master: media_player.sonos_beam
+        entity_id: media_player.living_room
+    - service: light.turn_on
+      data:
+        brightness_pct: 100
+      target:
+        entity_id: light.furdo
+  mode: single
+  icon: mdi:bed-outline
+
 # Dynamic cleaning scripts
-vacuum_zones_cleanup:
-  alias: "Clean up selected zones"
-  sequence:
-    - service: vacuum.send_command
-      data_template:
-        entity_id: vacuum.xiaomi_vacuum_cleaner
-        command: zoned_cleanup
-        params:
-          'zone_ids':
-            - "{%- if states('input_boolean.toclean_livingroom') == 'on' %}Livingroom{% endif %}"
-            - "{%- if states('input_boolean.toclean_bedroom') == 'on' %}Bedroom{% endif %}"
-            - "{%- if states('input_boolean.toclean_common') == 'on' %}Common{% endif %}"
-            - "{%- if states('input_boolean.toclean_kitchen') == 'on' %}Kitchen{% endif %}"
+# vacuum_zones_cleanup:
+#   alias: "Clean up selected zones"
+#   sequence:
+#     - service: vacuum.send_command
+#       data_template:
+#         entity_id: vacuum.xiaomi_vacuum_cleaner
+#         command: zoned_cleanup
+#         params:
+#           'zone_ids':
+#             - "{%- if states('input_boolean.toclean_livingroom') == 'on' %}Livingroom{% endif %}"
+#             - "{%- if states('input_boolean.toclean_bedroom') == 'on' %}Bedroom{% endif %}"
+#             - "{%- if states('input_boolean.toclean_common') == 'on' %}Common{% endif %}"
+#             - "{%- if states('input_boolean.toclean_kitchen') == 'on' %}Kitchen{% endif %}"
 
-vacuum_zones_vacuum:
-  alias: "Vacuum selected zones"
-  sequence:
-    - service: vacuum.set_fan_speed
-      data:
-        entity_id: vacuum.xiaomi_vacuum_cleaner
-        fan_speed: 'max'
-    - service: script.vacuum_zones_cleanup
+# vacuum_zones_vacuum:
+#   alias: "Vacuum selected zones"
+#   sequence:
+#     - service: vacuum.set_fan_speed
+#       data:
+#         entity_id: vacuum.xiaomi_vacuum_cleaner
+#         fan_speed: 'max'
+#     - service: script.vacuum_zones_cleanup
 
-vacuum_zones_mop:
-  alias: "Vacuum selected zones"
-  sequence:
-    - service: vacuum.set_fan_speed
-      data:
-        entity_id: vacuum.xiaomi_vacuum_cleaner
-        fan_speed: 'mop'
-    - service: script.vacuum_zones_cleanup
+# vacuum_zones_mop:
+#   alias: "Vacuum selected zones"
+#   sequence:
+#     - service: vacuum.set_fan_speed
+#       data:
+#         entity_id: vacuum.xiaomi_vacuum_cleaner
+#         fan_speed: 'mop'
+#     - service: script.vacuum_zones_cleanup
 
-vacuum_goto_dustbin:
-  alias: "Go to the dustbin"
-  sequence:
-    - service: vacuum.send_command
-      data:
-        entity_id: vacuum.xiaomi_vacuum_cleaner
-        command: go_to
-        params:
-          'spot_id': 'Dustbin'
+# vacuum_goto_dustbin:
+#   alias: "Go to the dustbin"
+#   sequence:
+#     - service: vacuum.send_command
+#       data:
+#         entity_id: vacuum.xiaomi_vacuum_cleaner
+#         command: go_to
+#         params:
+#           'spot_id': 'Dustbin'
 
 # Automation helper scripts
 minimal_light_if_sun_below_horizon:
@@ -48,7 +148,8 @@ minimal_light_if_sun_below_horizon:
       entity_id: sun.sun
       state: below_horizon
     - service: light.turn_on
-      entity_id: light.eloterek
+      target:
+        entity_id: light.eloterek
       data:
         brightness_pct: 5
     - condition: state
@@ -59,14 +160,13 @@ minimal_light_if_sun_below_horizon:
       data:
         brightness_pct: 5
 
-
 cover_open_if_sun_above_horizon:              
   sequence:
     - condition: state
       entity_id: sun.sun
       state: above_horizon
     - service: scene.turn_on
-      entity_id: scene.covers_half
+      entity_id: scene.covers_day
 
 hallway_light_on_for_time:
   sequence:

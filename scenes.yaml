@@ -1,17 +1,19 @@
-- name: covers_half
+- name: covers_day
   entities:
     cover.erkely_ajto:
       state: open
-      current_position: 70
+      current_position: 80
     cover.nappali_ablak:
       state: open
-      current_position: 3
+      current_position: 10
     cover.konyha:
       state: open
       current_position: 70
-#    cover.kisszoba:
-#      current_position: 50
-- name: covers_touch
+    cover.kisszoba:
+      state: open
+      current_position: 80
+
+- name: covers_night
   entities:
     cover.erkely_ajto:
       state: open
@@ -22,38 +24,21 @@
     cover.konyha:
       state: open
       current_position: 3
-#    cover.kisszoba:
-#      current_position: 3
+    cover.kisszoba:
+      state: open
+      current_position: 3
+
 - name: covers_open
   entities:
-#    cover.allshutter:
-#      current_position: 100
-    cover.erkely_ajto:
+    cover.allshutter:
       state: open
-#      current_position: 100
-    cover.nappali_ablak:
-      state: open
-#      current_position: 100
-    cover.konyha:
-      state: open
-#      current_position: 100
+
 - name: covers_close
   entities:
     cover.allshutter:
       state: close
-#      current_position: 0
-#    cover.erkely_ajto:
-#      state: close
-#      current_position: 0
-#    cover.nappali_ablak:
-#      state: close
-#      current_position: 0
-#    cover.konyha:
-#      state: close
-#      current_position: 0
 
-# Livingroom cover scenes
-- name: covers_livingroom_touch
+- name: covers_livingroom_night
   entities:
     cover.erkely_ajto:
       state: open
@@ -61,7 +46,8 @@
     cover.nappali_ablak:
       state: open
       current_position: 3
-- name: covers_livingroom_open
+
+- name: covers_livingroom_day
   entities:
     cover.erkely_ajto:
       state: open
@@ -70,25 +56,25 @@
       state: open
       current_position: 10
 
-# Bedroom cover scenes
-- name: covers_bedroom_touch
+- name: covers_bedroom_night
   entities:
     cover.kisszoba:
       state: open
-      current_position: 6
-- name: covers_bedroom_open
-  entities:
-    cover.kisszoba:
-      state: open
-#      current_position: 100
+      current_position: 3
 
-# Kitchen cover scenes
-- name: covers_kitchen_touch
+- name: covers_bedroom_day
+  entities:
+    cover.kisszoba:
+      state: open
+      current_position: 80
+
+- name: covers_kitchen_night
   entities:
     cover.konyha:
       state: open
       current_position: 3
-- name: covers_kitchen_open
+
+- name: covers_kitchen_day
   entities:
     cover.konyha:
       state: open

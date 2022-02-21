@@ -1,29 +1,17 @@
-#- platform: tradfri
-#  host: !secret ip_tradfri
-#  allow_tradfri_groups: true
-
 # - platform: group
-#   name: Szoba
+#   name: Eloterek
 #   entities:
-#     - light.Living_LB1
-#     - light.Living_LB2
-#     - light.Living_LB3
-#     - light.Living_LB4
-
-- platform: group
-  name: Eloterek
-  entities:
-    - light.szelfogo
-    - light.etkezo
-    - light.kozlekedo
+#     - light.szelfogo
+#     - light.etkezo
+#     - light.kozlekedo
 #    - light.konyha
 
-- platform: group
-  name: Halo
-  entities:
-    - light.spot_1
-    - light.spot_2
-    - light.spot_3
+# - platform: group
+#   name: Halo
+#   entities:
+#     - light.spot_1
+#     - light.spot_2
+#     - light.spot_3
 
 - platform: group
   name: offgroup

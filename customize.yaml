@@ -1,11 +1,3 @@
-#'*.*':
-#  custom_ui_state_card: state-card-custom-ui
-# group.all_lights: {}
-# group.weather:
-#   state_card_mode: badges
-# group.room_lights:
-#   assumed_state: true
-
 sensor.nappali_vezerlo:
   device_class: battery
 sensor.nappali_dimmer:

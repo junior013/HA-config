@@ -319,7 +319,7 @@ binary_sensor:
         - homeassistant.service:
             service: scene.turn_on
             data:
-              entity_id: scene.covers_kitchen_open
+              entity_id: scene.covers_kitchen_day
 
   - platform: nextion
     name: $device_name Shutter Night
@@ -330,7 +330,7 @@ binary_sensor:
         - homeassistant.service:
             service: scene.turn_on
             data:
-              entity_id: scene.covers_kitchen_touch
+              entity_id: scene.covers_kitchen_night
 
   # Light page buttons
   - platform: nextion

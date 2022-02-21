@@ -14,16 +14,16 @@
     entity_id: binary_sensor.frontdoor
     from: 'off'
     to: 'on'
-  condition:
-  - condition: state
-    entity_id: input_boolean.somebody_at_home
-    state: 'on'
+  condition: []
   action:
   - service: script.cover_open_if_sun_above_horizon
+    data: {}
   - service: script.minimal_light_if_sun_below_horizon
+    data: {}
   - service: light.turn_on
     target:
       entity_id: light.tablet_screens
+    data: {}
   - service: automation.turn_off
     entity_id: automation.scene_set_when_anybody_arrives_home
   initial_state: false
@@ -42,9 +42,9 @@
     entity_id: input_boolean.somebody_at_home
   - service: automation.turn_on
     entity_id: automation.scene_set_when_anybody_arrives_home
-  - service: cover.close_cover
+  - service: scene.turn_on
     target:
-      entity_id: cover.allshutter
+      entity_id: scene.covers_night
   - service: light.turn_off
     data:
       entity_id: all
@@ -76,7 +76,7 @@
     value_template: '{{ trigger.payload_json.RfReceived.RfKey == 2 }}'
   action:
     service: scene.turn_on
-    entity_id: scene.covers_touch
+    entity_id: scene.covers_night
 - id: scene_by_rfkey3
   alias: Full open covers by remote key C
   trigger:
@@ -87,7 +87,7 @@
     value_template: '{{ trigger.payload_json.RfReceived.RfKey == 3 }}'
   action:
     service: scene.turn_on
-    entity_id: scene.covers_open
+    entity_id: scene.covers_day
 - id: scene_by_rfkey4
   alias: Full close covers by remote key D
   trigger:
@@ -98,7 +98,7 @@
     value_template: '{{ trigger.payload_json.RfReceived.RfKey == 4 }}'
   action:
     service: scene.turn_on
-    entity_id: scene.covers_close
+    entity_id: scene.covers_night
 - id: scene_by_rfkey5
   alias: Toggle bedroom light by A
   trigger:
@@ -119,10 +119,8 @@
     condition: template
     value_template: '{{ trigger.payload_json.RfReceived.RfKey == 6 }}'
   action:
-    service: cover.set_cover_position
-    entity_id: cover.kisszoba
-    data:
-      position: 50
+    service: scene.turn_on
+    entity_id: scene.cover_kisszoba_day
 - id: scene_by_rfkey8
   alias: Close bedroom cover by remote key D
   trigger:
@@ -132,10 +130,8 @@
     condition: template
     value_template: '{{ trigger.payload_json.RfReceived.RfKey == 8 }}'
   action:
-    service: cover.set_cover_position
-    entity_id: cover.kisszoba
-    data:
-      position: 3
+    service: scene.turn_on
+    entity_id: scene.cover_kisszoba_night
 - id: start_coffee_timer
   alias: Start Coffee timer
   trigger:
@@ -211,10 +207,9 @@
 - id: corridor_light_on_by_movement
   alias: Corridor light by motion detector
   trigger:
-  - event_data:
-      entity_id: binary_sensor.motion_corridor
-    event_type: xiaomi_aqara.motion
-    platform: event
+  - platform: state
+    entity_id: binary_sensor.motion_corridor
+    to: 'on'
   condition: []
   action:
   - service: timer.cancel
@@ -270,33 +265,37 @@
 - id: bedlight_by_xiaomi_button
   alias: Bed light by Xiaomi button
   trigger:
-    platform: event
-    event_type: xiaomi_aqara.click
-    event_data:
-      entity_id: binary_sensor.switch_bedside
-      click_type: single
+    - platform: event
+      event_type: zha_event
+      event_data:
+        device_ieee: 00:15:8d:00:02:0e:b3:9f
+        command: click
+        args:
+          click_type: single
   action:
     service: light.toggle
     entity_id: light.livingroom_bedlight
 - id: roomlight_by_xiaomi_button
   alias: Livingroom light by Xiaomi button
   trigger:
-    platform: event
-    event_type: xiaomi_aqara.click
-    event_data:
-      entity_id: binary_sensor.switch_bedside
-      click_type: double
+    - platform: event
+      event_type: zha_event
+      event_data:
+        device_ieee: 00:15:8d:00:02:0e:b3:9f
+        command: click
+        args:
+          click_type: double
   action:
     service: light.toggle
     entity_id: light.szoba
-- id: bright_light_by_xiaomi_button
+- id: blackout_by_xiaomi_button
   alias: Blackout lights by Xiaomi button
   trigger:
-  - platform: event
-    event_type: xiaomi_aqara.click
-    event_data:
-      entity_id: binary_sensor.switch_bedside
-      click_type: long_click_press
+    - platform: event
+      event_type: zha_event
+      event_data:
+        device_ieee: 00:15:8d:00:02:0e:b3:9f
+        command: hold
   action:
   - service: light.turn_off
     entity_id: light.offgroup
@@ -304,22 +303,27 @@
     target:
       entity_id: light.tablet_screens
   mode: single
-- id: '1569523573411'
-  alias: Radio OFF if TV ON
+- id: '1644167881016'
+  alias: Turn On TV
+  description: ''
+  use_blueprint:
+    path: cvroque/webostv_turn_on.yaml
+    input:
+      webostv_mac: 64:95:6C:1C:6F:B7
+      webostv: media_player.tv
+- id: '1644168250343'
+  alias: Morning automation
+  description: ''
   trigger:
-  - entity_id: media_player.tv
-    from: 'off'
-    platform: state
-  condition: []
+  - platform: time
+    at: sensor.oneplus_a5000_next_alarm
+  condition:
+  - condition: state
+    entity_id: person.izer_nandor_jr
+    state: home
   action:
-    service: media_player.turn_off
-    entity_id: media_player.hifi
-- alias: Set theme at startup
-  trigger:
-  - platform: homeassistant
-    event: start
-  action:
-    service: frontend.set_theme
-    data:
-      name: dark
-  id: 1f5b62a3c23e43bab15c2ab670b23989
+  - service: script.turn_on
+    data: {}
+    target:
+      entity_id: script.morning_routine
+  mode: single

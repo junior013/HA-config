@@ -2,36 +2,24 @@ title: Juniors Home
 resources:
   - url: /local/slider-entity-row.js
     type: js
-  - url: /local/mini-media-player/mini-media-player.js?v=0.9.8
+  - url: /hacsfiles/mini-media-player/mini-media-player-bundle.js
     type: module
+  - url: /hacsfiles/simple-thermostat/simple-thermostat.js
+    type: module
+  - url: /hacsfiles/lovelace-xiaomi-vacuum-map-card/xiaomi-vacuum-map-card.js
+    type: module
+#  - url: /local/mini-media-player/mini-media-player.js?v=0.9.8
+#    type: module
   - url: /local/custom-lovelace/bignumber-card/bignumber-card.js
     type: js
   - url: /local/custom-lovelace/entity-attributes-card/entity-attributes-card.js?v=2
     type: js
   - url: /local/custom-lovelace/bkk_stop/bkk_stop.js
     type: js
-
-# Exclude entities from "Unused entities" view
-excluded_entities:
-  - camera.vacuum_map
-  - customizer.customizer
-  - group.all_covers
-  - group.all_devices
-  - group.all_scripts
-  - group.all_switches
-  - group.all_automations
-  - hangouts.conversations
-  - light.izzo_1
-  - light.izzo_2
-  - light.izzo_3
-  - light.izzo_4
-  - script.clean_diningroom
-  - script.clean_hallway
-  - script.clean_livingroom
-  - script.clean_lobby
-
-excluded_domains:
-  - device_tracker
+  - url: /hacsfiles/lovelace-state-switch/state-switch.js
+    type: module
+  - url: /hacsfiles/battery-state-card/battery-state-card.js
+    type: module
 
 views:
 
@@ -47,20 +35,72 @@ views:
         type: horizontal-stack
         cards:
           - id: 011
-            type: picture-entity
+            type: picture-glance
+            title: Junior
             image: !secret fb_img_junior
-            entity: device_tracker.junior_3t
+            entity: person.izer_nandor_jr
+            state_filter:
+              "not_home": saturate(0) opacity(50%)
+            tap_action:
+              action: navigate
+              navigation_path: '/lovelace/2'
+            entities:
+              - entity: light.szoba
+                name: Livingroom
+                icon: mdi:ceiling-light
+              - entity: scene.covers_livingroom_open
+                name: Open
+                icon: mdi:window-shutter-open
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.covers_livingroom_open
+              - entity: scene.covers_livingroom_touch
+                name: Touch
+                icon: mdi:window-shutter
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.covers_livingroom_touch
           - id: 012
-            type: picture-entity
-            image: !secret fb_img_zsani
+            type: picture-glance
+            title: Mona
+            image: !secret fb_img_mona
             entity: device_tracker.zsani_tel
+            state_filter:
+              "not_home": saturate(0) opacity(50%)
+            tap_action:
+              action: navigate
+              navigation_path: '/lovelace/1'
+            entities:
+              - entity: light.halo
+                name: Bedroom
+                icon: mdi:ceiling-light
+              - entity: scene.covers_bedroom_open
+                name: Open
+                icon: mdi:window-shutter-open
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.covers_bedroom_open
+              - entity: scene.covers_bedroom_touch
+                name: Touch
+                icon: mdi:window-shutter
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.covers_bedroom_touch
       - id: 255402a10e5a4c4ca478b7faa9c46c56  # Automatically created id
         type: horizontal-stack
         cards:
           - id: 021
             type: custom:bignumber-card
-            title: Szoba
-            entity: sensor.inner_temperature
+            title: Inner
+            entity: sensor.livingroom_temperature
             scale: 30px
             from: bottom
             min: -20
@@ -78,9 +118,8 @@ views:
                 style: var(--label-badge-red)
           - id: 022
             type: custom:bignumber-card
-            title: Kint
-#            entity: sensor.owm_temperature
-            entity: sensor.temperature_x1
+            title: Outer
+            entity: sensor.balcony_temperature
             scale: 30px
             from: bottom
             min: -20
@@ -96,62 +135,268 @@ views:
                 style: var(--label-badge-yellow)
               - value: 40
                 style: var(--label-badge-red)
-      - id: 03  # Automatically created id
-        type: horizontal-stack
+      - type: horizontal-stack
         cards:
-          - id: 031
-            title: BKK-5
-            type: 'custom:custom-bkk-stop'
-            entity: sensor.bkk_illyes
-          - id: 032
-            title: BKK-196
-            type: 'custom:custom-bkk-stop'
-            entity: sensor.bkk_beller
-
-      - id: 88765c6da6f94605936644580bc0e34f  # Automatically created id
-        type: horizontal-stack
-        cards:
-          - type: entities
-            title: Kapcsolók
-            show_header_toggle: false
+          - type: picture-glance
+            image: /local/images/kitchen.jpg
+            aspect_ratio: '2'
+            entity: light.konyha
+            state_filter:
+              "off": brightness(30%)
+              "unavailable": saturate(0) opacity(50%)
+            tap_action:
+              action: navigate
+              navigation_path: '/lovelace/3'
             entities:
-              - entity: light.eloterek
-                name: Előterek
-              - entity: light.szoba
-                name: Nappali
-              - entity: light.livingroom_bedlight
-                name: Ágy világítás
-                attribute: white_value
-                type: custom:slider-entity-row
-                hide_when_off: false
-              - entity: light.bedroom
-                name: Kisszoba
-              - entity: light.furdo
-                name: Fürdő
+              - entity: light.konyha
+                name: Konyha
+                icon: mdi:ceiling-light
+              - entity: scene.covers_kitchen_open
+                name: Open
+                icon: mdi:window-shutter-open
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.covers_kitchen_open
+              - entity: scene.covers_kitchen_touch
+                name: Touch
+                icon: mdi:window-shutter
+                tap_action:
+                  action: call-service
+                  service: scene.turn_on
+                  service_data:
+                    entity_id: scene.covers_kitchen_touch
               - entity: switch.coffee
-                name: Kávéfőző
-          - type: entities
-            title: Összes redőny
+                name: CoffeeMachine
+                icon: mdi:coffee
+          - type: picture-glance
+            image: /local/images/bathroom.jpg
+            aspect_ratio: '2'
+            entity: light.furdo
+            state_filter:
+              "off": brightness(30%)
+              "unavailable": saturate(0) opacity(50%)
+            tap_action:
+              action: navigate
+              navigation_path: '/lovelace/4'
             entities:
-              - entity: group.all_covers
-                name: Csoport
-              - entity: cover.erkely_ajto
-                name: Ajtó redőny
-              - entity: scene.covers_open
-                name: Kinyit
-              - entity: scene.covers_half
-                name: Félállás
-              - entity: scene.covers_touch
-                name: Érintő
-              - entity: scene.covers_close
-                name: Lezár
-      - id: 34237cc847ea4266b9ecd28cea464526  # Automatically created id
-        type: custom:mini-media-player
-        entity: media_player.hifi
-        icon: mdi:radio
-        volume_stateless: true
-        power_color: true
-        hide_controls: true
+              - entity: light.furdo
+                name: Bathroom
+                icon: mdi:ceiling-light
+              - entity: binary_sensor.door_bathroom
+                name: Door
+              - entity: binary_sensor.water_leak_bathroom
+                name: Flooding
+
+      - type: glance
+        title: Other lights
+        show_state: false
+        entities:
+          - entity: light.szelfogo
+            name: Entrance
+            tap_action:
+              action: toggle
+          - entity: light.etkezo
+            name: Diningroom
+            tap_action:
+              action: toggle
+          - entity: light.kozlekedo
+            name: Corridor
+            tap_action:
+              action: toggle
+
+############
+#  Szobák  #
+############
+
+  - title: Bedroom
+    icon: mdi:bed
+    cards:
+      - type: light
+        entity: light.halo
+        name: Ceiling
+        icon: mdi:ceiling-light
+      - show_header_toggle: false
+        entities:
+          - entity: cover.kisszoba
+            name: Window shutter
+          - type: custom:entity-attributes-card
+            heading_name: Actual
+            heading_state: position
+            filter:
+              include:
+                - key: cover.kisszoba.current_position
+                  name: Window
+        type: entities
+      - type: custom:state-switch
+        entity: input_boolean.central_heating
+        default: 'off'
+        states:
+          'on':
+            entity: climate.bedroom
+            type: custom:simple-thermostat
+            step_layout: row
+            name: false
+            step_size: 1
+            sensors:
+              - entity: sensor.bedroom_humidity
+                name: Humidity
+              - entity: sensor.bedroom_heating
+                name: Heating
+            control:
+              _icons: false
+              hvac:
+                'off': false
+                heat:
+                  name: 'forced'
+                auto:
+                  name: scheduled
+          'off':
+            entity: climate.ac_bedroom
+            type: custom:simple-thermostat
+            step_layout: row
+            name: false
+            step_size: 1
+            sensors:
+              - entity: sensor.bedroom_humidity
+                name: Humidity
+            control:
+              _icons: true
+              hvac: true
+              fan:
+                _hide_when_off: true
+                'Auto':
+                  icon: mdi:autorenew
+                  name: false
+                'low':
+                  icon: mdi:fan-speed-1
+                  name: false
+                'Medium-Low': false
+                'medium':
+                  icon: mdi:fan-speed-2
+                  name: false
+                'Medium-High': false
+                'high':
+                  icon: mdi:fan-speed-3
+                  name: false
+                'Turbo':
+                  icon: mdi:fan-plus
+                  name: false
+                'Quiet':
+                  icon: mdi:volume-off
+                  name: false
+
+  - title: Livingroom
+    icon: mdi:television-classic
+    cards:
+      - type: horizontal-stack
+        cards:
+        - type: light
+          entity: light.szoba
+          name: Ceiling
+          icon: mdi:ceiling-light
+        - type: light
+          entity: light.livingroom_bedlight
+          name: Bedside
+          icon: mdi:bed-empty
+      # - type: sensor
+      #   entity: sensor.illumination_xgw
+      #   name: Illumination
+      #   graph: 'line'
+      - show_header_toggle: false
+        type: entities
+        entities:
+          - entity: light.xgw_light
+            name: X Gateway
+            icon: mdi:alpha-g-circle-outline
+            attribute: brightness
+            type: custom:slider-entity-row
+            hide_when_off: false
+          - type: divider
+          - entity: cover.erkely_ajto
+            name: Door shutter
+          - entity: cover.nappali_ablak
+            name: Window shutter
+          - type: custom:entity-attributes-card
+            heading_name: Actual
+            heading_state: position
+            filter:
+              include:
+                - key: cover.erkely_ajto.current_position
+                  name: Balcony door
+                - key: cover.nappali_ablak.current_position
+                  name: Window
+          - type: divider
+          - entity: cover.window
+            name: Window opener
+          - type: custom:entity-attributes-card
+            heading_name: Actual
+            heading_state: position
+            filter:
+              include:
+                - key: cover.window.current_position
+                  name: Window opened
+      - type: custom:state-switch
+        entity: input_boolean.central_heating
+        default: 'off'
+        states:
+          'on':
+            entity: climate.livingroom
+            type: custom:simple-thermostat
+            step_layout: row
+            name: false
+            step_size: 1
+            sensors:
+              - entity: sensor.livingroom_humidity
+                name: Humidity
+              - entity: sensor.livingroom_heating
+                name: Heating
+            control:
+              _icons: false
+              hvac:
+                'off': false
+                heat:
+                  name: 'forced'
+                auto:
+                  name: scheduled
+          'off':
+            entity: climate.ac_livingroom
+            type: custom:simple-thermostat
+            step_layout: row
+            name: false
+            step_size: 1
+            sensors:
+              - entity: sensor.livingroom_humidity
+                name: Humidity
+            control:
+              _icons: true
+              hvac: true
+              fan:
+                _hide_when_off: true
+                'Auto':
+                  icon: mdi:autorenew
+                  name: false
+                'low':
+                  icon: mdi:fan-speed-1
+                  name: false
+                'Medium-Low': false
+                'medium':
+                  icon: mdi:fan-speed-2
+                  name: false
+                'Medium-High': false
+                'high':
+                  icon: mdi:fan-speed-3
+                  name: false
+                'Turbo':
+                  icon: mdi:fan-plus
+                  name: false
+                'Quiet':
+                  icon: mdi:volume-off
+                  name: false
+    #          swing:
+    #            _hide_when_off: true
+
       - id: 4548dbe202684f5c8cb3414ea8bed30e  # Automatically created id
         type: custom:mini-media-player
         entity: media_player.tv
@@ -159,141 +404,259 @@ views:
         volume_stateless: true
         power_color: true
         hide_controls: true
+      - type: custom:mini-media-player
+        entity: media_player.spotify
+#        icon: mdi:radio
+#        volume_stateless: true
+#        power_color: true
+#        hide_controls: true
+      - type: custom:mini-media-player
+        entity: media_player.living_room
 
-############
-#  Szobák  #
-############
+  - title: Kitchen
+    icon: mdi:food-fork-drink
+    cards:
+      - type: horizontal-stack
+        cards:
+        - type: light
+          entity: light.konyha
+          name: Ceiling
+          icon: mdi:wall-sconce-flat
+        - type: entity-button
+          entity: switch.coffee
+          name: Coffee
+          icon: mdi:coffee
+      - show_header_toggle: false
+        type: entities
+        entities:
+          - entity: cover.konyha
+            name: Windows shutter
+          - type: custom:entity-attributes-card
+            heading_name: Actual
+            heading_state: position
+            filter:
+              include:
+                - key: cover.konyha.current_position
+                  name: Window
+      - type: custom:state-switch
+        entity: input_boolean.central_heating
+        default: 'off'
+        states:
+          'on':
+            entity: climate.kitchen
+            type: custom:simple-thermostat
+            step_layout: row
+            name: false
+            icon: false
+            step_size: 1
+            sensors:
+              - entity: sensor.kitchen_humidity
+                name: Humidity
+              - entity: sensor.kitchen_heating
+                name: Heating
+            control:
+              _icons: false
+              hvac:
+                'off': false
+                heat:
+                  name: 'forced'
+                auto:
+                  name: scheduled
 
-  - id: 1  # Automatically created id
-    title: Szobák
+  - title: Bathroom
+    icon: mdi:hot-tub
+    cards:
+      - type: light
+        entity: light.furdo
+        name: Light
+      - type: glance
+        entities:
+          - entity: binary_sensor.door_bathroom
+            name: Door
+          - entity: binary_sensor.water_leak_bathroom
+            name: Flooding
+          - entity: sensor.bathroom_temperature
+            name: Temp
+      - type: picture-elements
+        image: /local/images/washing-machine.jpg
+        elements:
+          - type: state-label
+            entity: sensor.mosogep
+            attribute: current_course
+            style:
+              left: 0
+              bottom: 0
+              pointer-events: none
+              font-size: 16px
+              line-height: 32px
+              color: white
+              background-color: rgba(0, 0, 0, 0.3)
+              width: 100%
+              transform: initial
+              padding: 0 8px
+          - type: state-label
+            entity: sensor.mosogep
+            attribute: remain_time
+            style:
+              bottom: 0
+              right: 0
+              pointer-events: none
+              font-size: 16px
+              transform: initial
+              color: white
+              line-height: 32px
+              padding: 0px 44px
+          - type: icon
+            icon: mdi:progress-clock
+            entity: sensor.mosogep
+            attribute: run_state
+            style:
+              bottom: 0
+              right: 0
+              transform: initial
+              color: white
+              line-height: 32px
+              padding: 8px 16px
+          - type: state-label
+            entity: sensor.mosogep
+            attribute: run_state
+            style:
+              top: 0
+              right: 0
+              pointer-events: none
+              transform: initial
+              font-size: 12px
+              color: rgba(255,255,255,0.8)
+              line-height: 32px
+              padding: 59px 35px
+          - type: icon
+            icon: mdi:washing-machine
+            style:
+              top: 0
+              right: 0
+              pointer-events: none
+              transform: scale(0.8)
+              color: rgba(255,255,255,0.8)
+              line-height: 32px
+              padding: 66px 13px
+          - type: state-label
+            entity: sensor.mosogep
+            attribute: watertemp_option_state
+            style:
+              top: 0
+              right: 0
+              pointer-events: none
+              transform: initial
+              font-size: 12px
+              color: rgba(255,255,255,0.8)
+              line-height: 32px
+              padding: 1px 35px
+          - type: icon
+            icon: mdi:coolant-temperature
+            style:
+              top: 0
+              right: 0
+              pointer-events: none
+              transform: scale(0.8)
+              color: rgba(255,255,255,0.8)
+              line-height: 32px
+              padding: 8px 13px
+          - type: state-label
+            entity: sensor.mosogep
+            attribute: spin_option_state
+            style:
+              top: 0
+              right: 0
+              pointer-events: none
+              transform: initial
+              font-size: 12px
+              color: rgba(255,255,255,0.8)
+              line-height: 32px
+              padding: 30px 35px
+          - type: icon
+            icon: mdi:rotate-3d-variant
+            style:
+              top: 0
+              right: 0
+              pointer-events: none
+              transform: scale(0.8)
+              color: rgba(255,255,255,0.8)
+              line-height: 32px
+              padding: 36px 13px
+
+  - title: Common
     icon: mdi:floor-plan
     cards:
-      - id: e690656dcb6247e698e444eaea8af69c  # Automatically created id
-        title: Kisszoba
-        show_header_toggle: false
-        entities:
-          - entity: light.bedroom
-            name: Világítás
-          - type: divider
-          - entity: cover.kisszoba
-            name: Redőny
-          - type: custom:entity-attributes-card
-            heading_name: Aktuális
-            heading_state: pozíció
-            filter:
-              include:
-                - key: cover.kisszoba.current_position
-                  name: Redőny
-        type: entities
-      - id: 4db1b362400242b3850c119e47ffa9a8  # Automatically created id
-        title: Nappali
-        show_header_toggle: false
-        type: entities
-        entities:
-          - entity: sensor.illumination_xgw
-            name: Fényerő
-          - type: divider
-          - entity: light.szoba
-            name: Fő világítás
-            attribute: brightness
-            type: custom:slider-entity-row
-            hide_when_off: false
-          - entity: light.livingroom_bedlight
-            name: Ágy világítás
-            attribute: white_value
-            type: custom:slider-entity-row
-            hide_when_off: false
-          - entity: light.xgw_light
-            name: XGW Fény
-            attribute: brightness
-            type: custom:slider-entity-row
-            hide_when_off: false
-          - type: divider
-          - entity: cover.erkely_ajto
-            name: Ajtó redőny
-          - entity: cover.nappali_ablak
-            name: Ablak redőny
-          - type: custom:entity-attributes-card
-            heading_name: Aktuális
-            heading_state: pozíció
-            filter:
-              include:
-                - key: cover.erkely_ajto.current_position
-                  name: Erkély ajtó
-                - key: cover.nappali_ablak.current_position
-                  name: Nappali ablak
-      - id: 16dbf41ef6dd49c5aa7c5440ba0f1b82  # Automatically created id
-        type: vertical-stack
+      - type: vertical-stack
         cards:
-          - title: Előterek
+          - title: Common
             type: entities
             entities:
-              - entity: binary_sensor.rfkey15
-                secondary_info: last-changed
-                name: Bejárati ajtó
-              - entity: binary_sensor.rfkey16
-                secondary_info: last-changed
-                name: Mozgás
-              - type: divider
               - entity: light.eloterek
-                name: Össz fényerő
+                name: Brightness
                 attribute: brightness
                 type: custom:slider-entity-row
                 hide_when_off: false
                 show_value: true
-              - light.szelfogo
-              - light.etkezo
-              - light.kozlekedo
-          - type: picture-entity
-            entity: camera.doorcam
-            title: Bejárat
-          - title: Konyha
-            show_header_toggle: false
-            type: entities
+              - entity: light.szelfogo
+                name: Lobby
+              - entity: light.etkezo
+                name: Diningrrom
+              - entity: light.kozlekedo
+                name: Hallway
+          - type: picture-glance
+            camera_image: camera.doorcam
+            title: Entry
             entities:
-              - entity: switch.coffee
-                name: Kávéfőző
-              - type: divider
-              - entity: cover.konyha
-                name: Redőny
-              - type: custom:entity-attributes-card
-                heading_name: Aktuális
-                heading_state: pozíció
-                filter:
-                  include:
-                    - key: cover.konyha.current_position
-                      name: Redőny
-      - id: 65bc58369a674223897ed429abf0d344  # Automatically created id
-        title: Fürdő
-        type: entities
-        show_header_toggle: false
-        entities:
-          - entity: binary_sensor.door_bathroom
-            name: Ajtó
-          - entity: binary_sensor.water_leak_bathroom
-            name: Vízfolyás
-          - type: divider
-          - entity: light.furdo
-            name: Világítás
-            attribute: brightness
-            type: custom:slider-entity-row
+              - entity: binary_sensor.frontdoor
+                secondary_info: last-changed
+                name: Front door
+              - entity: binary_sensor.motion_entrance
+                secondary_info: last-changed
+                name: Motion
+      - type: custom:state-switch
+        entity: input_boolean.central_heating
+        default: 'off'
+        states:
+          'on':
+            entity: climate.entrance
+            type: custom:simple-thermostat
+            step_layout: row
+            name: false
+            icon: false
+            step_size: 1
+            sensors:
+              - entity: sensor.entrance_humidity
+                name: Humidity
+              - entity: sensor.entrance_heating
+                name: Heating
+            control:
+              _icons: false
+              hvac:
+                'off': false
+                heat:
+                  name: 'forced'
+                auto:
+                  name: scheduled
+
+        
 
 ##############
 #  Időjárás  #
 ##############
 
   - id: 2  # Automatically created id
-    icon: mdi:weather-partlycloudy
-    title: Időjárás
+    icon: mdi:weather-partly-cloudy
+    title: Weather
     cards:
       - id: b557d1db561a43248dbc3a1301137654  # Automatically created id
         type: weather-forecast
-        title: Előrejelzés
+        title: Forecast
         entity: weather.openweathermap
       - id: a5a5ed1b420447099989b325ed6db672  # Automatically created id
         type: vertical-stack
         cards:
-          - title: Aktuális
+          - title: Actual
             entities:
               - sun.sun
               - sensor.inner_temperature
@@ -306,27 +669,27 @@ views:
               - sensor.yr_weather_cloudiness
             type: glance
           - type: history-graph
-            title: Elmúlt 3 nap
+            title: Past 3 days
             hours_to_show: 72
             entities:
               - entity: sensor.inner_temperature
-                name: Belső
+                name: Inner
               - entity: sensor.yr_weather_temperature
-                name: Külső net
+                name: Outer from net
               - entity: sensor.temperature_x1
-                name: Külső mért
+                name: Outer measered
 
 ###########
 #  Média  #
 ###########
 
   - id: 3  # Automatically created id
-    title: Média
+    title: Media
     icon: mdi:music
     theme: dark-mode
     cards:
       - id: 30e9dd5bf7af4999972a450655039335  # Automatically created id
-        entity: media_player.hifi
+        entity: media_player.living_room
         type: media-control
       - id: 27629c85b9a649b58a74768f1350ab6f  # Automatically created id
         entity: media_player.tv
@@ -344,21 +707,38 @@ views:
 
   - id: 4  # Automatically created id
     icon: mdi:broom
-    title: takarítás
+    title: Clean up
     cards:
       # - id: 3391edf5a60a42ebba2e2a27a3739db8  # Automatically created id
       #   type: horizontal-stack
       #   cards:
       - id: 411
-        type: picture-entity
-        name: Jolika
-        entity: vacuum.xiaomi_vacuum_cleaner
+        type: picture-elements
         image: /local/images/roborock.jpg
-        state_image:
-          docked: /local/images/roborock_bw.jpg
+        entity_id: vacuum.jolika
+        state_filter:
+          docked: saturation(0)
+        elements:
+          - camera_image: camera.jolika_map
+            camera_view: camera.jolika_map
+            entity: camera.jolika_map
+            style:
+              left: '-26%'
+              opacity: 0.6
+              top: '-50%'
+              transform: 'rotate(-0.5deg) translate(-0%, -0%)'
+              width: 160%
+            type: image
+          - type: state-label
+            entity: sensor.vacuum_status
+            style:
+              right: '-15%'
+              top: '10%'
+              text-align: right
+              background-color: rgba(0, 75, 170, 0.7)
       - id: 412
         type: custom:bignumber-card
-        title: Akku
+        title: Battery
         entity: sensor.vacuum_battery_level
         scale: 38px
         from: bottom
@@ -373,226 +753,117 @@ views:
             style: var(--label-badge-blue)
           - value: 100
             style: var(--label-badge-green)
-      - id: 8471c2291e3f430bba92298735164a31  # Automatically created id
-        type: picture-elements
-        image: /local/images/transparent.png
-        elements:
-          - type: icon
-            icon: mdi:bell-ring
-            title: Locate
-            entity: vacuum.xiaomi_vacuum_cleaner
-            tap_action:
-              action: call-service
-              service: vacuum.locate
-              service_data:
-                entity_id: vacuum.xiaomi_vacuum_cleaner
-            style:
-              bottom: 0%
-              left: 74%
-              --iron-icon-fill-color: rgb(255, 255, 255)
-          - type: icon
-            icon: mdi:home
-            title: Go Home
-            entity: vacuum.xiaomi_vacuum_cleaner
-            tap_action:
-              action: call-service
-              service: vacuum.return_to_base
-              service_data:
-                entity_id: vacuum.xiaomi_vacuum_cleaner
-            style:
-              bottom: 0%
-              left: 58%
-              --iron-icon-fill-color: rgb(255, 255, 255)
-          - type: icon
-            icon: mdi:broom
-            title: Clean all
-            entity: vacuum.xiaomi_vacuum_cleaner
-            tap_action:
-              action: call-service
-              service: vacuum.start
-              service_data:
-                entity_id: vacuum.xiaomi_vacuum_cleaner
-            style:
-              bottom: 0%
-              left: 10%
-              --iron-icon-fill-color: rgb(255, 255, 255)
-          - type: icon
-            icon: mdi:pause
-            title: Pause
-            entity: vacuum.xiaomi_vacuum_cleaner
-            tap_action:
-              action: call-service
-              service: vacuum.pause
-              service_data:
-                entity_id: vacuum.xiaomi_vacuum_cleaner
-            style:
-              bottom: 0%
-              left: 26%
-              --iron-icon-fill-color: rgb(255, 255, 255)
-          - type: icon
-            icon: mdi:stop
-            title: Stop Work
-            entity: vacuum.xiaomi_vacuum_cleaner
-            tap_action:
-              action: call-service
-              service: vacuum.stop
-              service_data:
-                entity_id: vacuum.xiaomi_vacuum_cleaner
-            style:
-              bottom: 0%
-              left: 42%
-              --iron-icon-fill-color: rgb(255, 255, 255)
-          - type: icon
-            icon: mdi:auto-fix
-            title: Mop all
-            entity: vacuum.xiaomi_vacuum_cleaner
-            tap_action:
-              action: call-service
-              service: vacuum.send_command
-              service_data:
-                entity_id: vacuum.xiaomi_vacuum_cleaner
-                command: app_zoned_clean
-                params: [[31600, 26350, 33700, 27800, 2], [30900, 24900, 33600, 25900,
-                      2], [27850, 28450, 30000, 29300, 1], [28100, 24950, 30700, 28300,
-                      1]]
-            style:
-              bottom: 0%
-              left: 90%
-              --iron-icon-fill-color: rgb(255, 255, 255)
-          - type: service-button
-            title: Előtér
-            entity: script.clean_lobby
-            service: script.clean_lobby
-            service_data:
-              entity_id: script.clean_lobby
-              # command: app_zoned_clean
-              # params: [[30900, 24900, 33600, 25900, 1]]
-            style:
-              top: 0%
-              left: 0%
-              width: 33%
-              color: rgb(255, 255, 255)
-              transform: translate(0%,0%)
-              text-shadow: 1px 1px black
-              text-align: center
-              font-family: Trebuchet MS
-              font-weight: bold
-              border-color: rgb(255, 255, 255)
-              background-color: rgb(54, 65, 78)
-              opacity: 0.8
-          - type: service-button
-            title: Étkező
-            entity: script.clean_diningroom
-            service: script.clean_diningroom
-            service_data:
-              entity_id: script.clean_diningroom
-            style:
-              top: 0%
-              left: 33%
-              width: 34%
-              color: rgb(255, 255, 255)
-              transform: translate(0%,0%)
-              text-shadow: 1px 1px black
-              text-align: center
-              font-family: Trebuchet MS
-              font-weight: bold
-              border-left-style: solid
-              border-color: rgb(255, 255, 255)
-              background-color: rgb(54, 65, 78)
-              opacity: 0.8
-          - type: service-button
-            title: Konyha
-            entity: script.clean_kitchen
-            service: script.clean_kitchen
-            service_data:
-              entity_id: script.clean_kitchen
-              # command: app_zoned_clean
-              # params: [[31800, 26100, 33700, 27700, 1]]
-            style:
-              top: 0%
-              left: 67%
-              width: 33%
-              color: rgb(255, 255, 255)
-              transform: translate(0%,0%)
-              text-shadow: 1px 1px black
-              text-align: center
-              font-family: Trebuchet MS
-              font-weight: bold
-              border-left-style: solid
-              border-color: rgb(255, 255, 255)
-              background-color: rgb(54, 65, 78)
-              opacity: 0.8
-          - type: service-button
-            title: Közlekedő
-            entity: script.clean_hallway
-            service: script.clean_hallway
-            service_data:
-              entity_id: script.clean_hallway
-              # command: app_zoned_clean
-              # params: [[27850, 28450, 30000, 29300, 1]]
-            style:
-              top: 30%
-              left: 0%
-              width: 33%
-              color: rgb(255, 255, 255)
-              transform: translate(0%,0%)
-              text-shadow: 1px 1px black
-              text-align: center
-              font-family: Trebuchet MS
-              font-weight: bold
-              border-top-style: solid
-              border-bottom-style: solid
-              border-color: rgb(255, 255, 255)
-              background-color: rgb(54, 65, 78)
-              opacity: 0.8
-          - type: service-button
-            title: Nappali
-            entity: script.clean_livingroom
-            service: script.clean_livingroom
-            service_data:
-              entity_id: script.clean_livingroom
-            #   command: app_zoned_clean
-            #   params: [[23050, 24900, 27850, 28300, 1]]
-            style:
-              top: 30%
-              left: 33%
-              width: 34%
-              color: rgb(255, 255, 255)
-              transform: translate(0%,0%)
-              text-shadow: 1px 1px black
-              text-align: center
-              font-family: Trebuchet MS
-              font-weight: bold
-              border-top-style: solid
-              border-bottom-style: solid
-              border-left-style: solid
-              border-color: rgb(255, 255, 255)
-              background-color: rgb(54, 65, 78)
-              opacity: 0.8
-          - type: service-button
-            title: Háló
-            entity: script.clean_bedroom
-            service: script.clean_bedroom
-            service_data:
-              entity_id: script.clean_bedroom
-              # command: app_zoned_clean
-              # params: [[23150, 28600, 27800, 31100, 1]]
-            style:
-              top: 30%
-              left: 67%
-              width: 33%
-              color: rgb(255, 255, 255)
-              transform: translate(0%,0%)
-              text-shadow: 1px 1px black
-              text-align: center
-              font-family: Trebuchet MS
-              font-weight: bold
-              border-top-style: solid
-              border-bottom-style: solid
-              border-left-style: solid
-              border-color: rgb(255, 255, 255)
-              background-color: rgb(54, 65, 78)
-              opacity: 0.8
+      - type: vertical-stack
+        cards:
+          - type: glance
+            title: Areas to clean
+            show_state: false
+            entities:
+              - name: Common
+                entity: input_boolean.toclean_common
+                tap_action:
+                  action: toggle
+              - name: Kitchen
+                entity: input_boolean.toclean_kitchen
+                tap_action:
+                  action: toggle
+              - name: Livingroom
+                entity: input_boolean.toclean_livingroom
+                tap_action:
+                  action: toggle
+              - name: Bedroom
+                entity: input_boolean.toclean_bedroom
+                tap_action:
+                  action: toggle
+          - type: picture-elements
+            image: /local/images/transparent.png
+            aspect_ratio: '10'
+            elements:
+              - type: icon
+                icon: mdi:broom
+                title: Clean selected
+                entity: script.vacuum_zones_vacuum
+                tap_action:
+                  action: call-service
+                  service: script.vacuum_zones_vacuum
+                style:
+                  bottom: 0%
+                  left: 8%
+                  --iron-icon-fill-color: rgb(255, 255, 255)
+              - type: icon
+                icon: mdi:auto-fix
+                title: Mop selected
+                entity: script.vacuum_zones_mop
+                tap_action:
+                  action: call-service
+                  service: script.vacuum_zones_mop
+                style:
+                  bottom: 0%
+                  left: 22%
+                  --iron-icon-fill-color: rgb(255, 255, 255)
+              - type: icon
+                icon: mdi:pause
+                title: Pause
+                entity: vacuum.xiaomi_vacuum_cleaner
+                tap_action:
+                  action: call-service
+                  service: vacuum.pause
+                  service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+                style:
+                  bottom: 0%
+                  left: 36%
+                  --iron-icon-fill-color: rgb(255, 255, 255)
+              - type: icon
+                icon: mdi:stop
+                title: Stop Work
+                entity: vacuum.xiaomi_vacuum_cleaner
+                tap_action:
+                  action: call-service
+                  service: vacuum.stop
+                  service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+                style:
+                  bottom: 0%
+                  left: 50%
+                  --iron-icon-fill-color: rgb(255, 255, 255)
+              - type: icon
+                icon: mdi:home
+                title: Go Home
+                entity: vacuum.xiaomi_vacuum_cleaner
+                tap_action:
+                  action: call-service
+                  service: vacuum.return_to_base
+                  service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+                style:
+                  bottom: 0%
+                  left: 64%
+                  --iron-icon-fill-color: rgb(255, 255, 255)
+              - type: icon
+                icon: mdi:delete-empty
+                title: Go to dustbin
+                entity: script.vacuum_goto_dustbin
+                tap_action:
+                  action: call-service
+                  service: script.vacuum_goto_dustbin
+                style:
+                  bottom: 0%
+                  left: 78%
+                  --iron-icon-fill-color: rgb(255, 255, 255)
+              - type: icon
+                icon: mdi:bell-ring
+                title: Locate
+                entity: vacuum.xiaomi_vacuum_cleaner
+                tap_action:
+                  action: call-service
+                  service: vacuum.locate
+                  service_data:
+                    entity_id: vacuum.xiaomi_vacuum_cleaner
+                style:
+                  bottom: 0%
+                  left: 92%
+                  --iron-icon-fill-color: rgb(255, 255, 255)
       - id: 41502dafb3a74678ae06a8970e0e9272  # Automatically created id
         type: horizontal-stack
         cards:
@@ -643,110 +914,9 @@ views:
               red: 0
               yellow: 3
               green: 10
-      - id: 35556124068340cd925c94807754e83c  # Automatically created id
-        type: picture-entity
-        entity: sensor.vacuum_status
-        camera_image: camera.vacuum_map
-        name: Takarítási térkép
-        tap_action: more-info
-
-#####################
-#  Rendszerállapot  #
-#####################
-
-  - id: 5  # Automatically created id
-    icon: mdi:server-network
-    title: Rendszerállapot
-    cards:
-      - id: e4d99f7e85bd40b1bc65040e22584e8c  # Automatically created id
-        type: vertical-stack
-        cards:
-          - type: entities
-            title: Server
-            entities:
-              - sensor.last_boot
-              - sensor.load_15m
-          - type: glance
-            entities:
-              - entity: sensor.processor_use
-                name: CPU
-              - entity: sensor.memory_use_percent
-                name: Mem
-              - entity: sensor.swap_use_percent
-                name: Swap
-              - entity: sensor.disk_use_percent
-                name: Root
-              - entity: sensor.disk_use_percent_mnt_store0
-                name: Store0
-          - type: history-graph
-            entities:
-              - entity: sensor.processor_use
-                name: CPU
-              - entity: sensor.memory_use_percent
-                name: Mem
-              - entity: sensor.swap_use_percent
-                name: Swap
-              - entity: sensor.disk_use_percent_
-                name: Root
-              - entity: sensor.disk_use_percent_mntstore0
-                name: Store0
-            hours_to_show: 240
-      - id: 8dcbe0c198354ceabd204d7bbb0c283c  # Automatically created id
-        type: vertical-stack
-        cards:
-          - type: glance
-            entities:
-              - entity: sensor.hd_temperature_dev_sda
-                name: HDD1
-              - entity: sensor.hd_temperature_dev_sdc
-                name: HDD2
-              - entity: sensor.hd_temperature_dev_sdd
-                name: HDD3
-              - entity: sensor.hd_temperature_dev_sde
-                name: HDD4
-              - entity: sensor.hd_temperature_dev_sdf
-                name: SSD
-          - type: history-graph
-            entities:
-              - entity: sensor.hd_temperature_dev_sda
-                name: HDD1
-              - entity: sensor.hd_temperature_dev_sdc
-                name: HDD2
-              - entity: sensor.hd_temperature_dev_sdd
-                name: HDD3
-              - entity: sensor.hd_temperature_dev_sde
-                name: HDD4
-              - entity: sensor.hd_temperature_dev_sdf
-                name: SSD
-            hours_to_show: 240
-      - id: 76e8693b646a456eae6d7e9c6b33b4ed  # Automatically created id
-        type: glance
-        title: Elem állapotok
-        entities:
-          - sensor.eloter_vezerlo_1
-          - sensor.eloter_vezerlo_2
-          - sensor.furdo_vezerlo
-          - sensor.nappali_vezerlo
-          - sensor.nappali_dimmer
-
-
-#################
-#  Beállítások  #
-#################
-
-  - id: 6  # Automatically created id
-    icon: mdi:settings
-    title: Beállítások
-    cards:
-      - id: 19f0bb1e5eab495da26905cf22c1d7fe  # Automatically created id
-        type: entities
-        title: Automatikák
-        entities:
-          - automation.close_covers_by_remote_key_b
-          - automation.full_close_covers_by_remote_key_d
-          - automation.full_open_covers_by_remote_key_c
-          - automation.hallway_light_by_motion_detector
-          - automation.morning_scene_by_remote_key_a
-          - automation.scene_set_when_anybody_arrives_home
-          - automation.scene_set_when_everybody_leaves_home
-          - automation.switch_off_coffee_after_time
+      # - id: 35556124068340cd925c94807754e83c  # Automatically created id
+      #   type: picture-entity
+      #   entity: sensor.vacuum_status
+      #   camera_image: camera.jolika_map
+      #   name: Takarítási térkép
+      #   tap_action: more-info

@@ -23,7 +23,7 @@ mqtt:
   discovery: true
   discovery_prefix: homeassistant
 
-system_health:
+#system_health:
 
 lovelace:
 #  mode: yaml
@@ -31,15 +31,17 @@ lovelace:
 http: !include inc/http.yaml
 
 frontend:
-  themes: !include themes.yaml
+  themes: !include_dir_merge_named themes/
   extra_html_url:
     - /local/custom_ui/state-card-custom-ui.html
   extra_html_url_es5:
     - /local/custom_ui/state-card-custom-ui-es5.html
 
-config:
+#config:
 
-mobile_app:
+default_config:
+
+#mobile_app:
 
 wake_on_lan:
 
@@ -85,7 +87,7 @@ recorder:
       - binary_sensor.updater  
       - sensor.hacs
 
-logbook:
+#logbook:
 
 sun:
   name: Sun
@@ -95,7 +97,7 @@ light: !include_dir_merge_list lights/
 sensor: !include_dir_merge_list sensors/
 switch: !include_dir_merge_list switches/
 cover: !include inc/covers.yaml
-scene: !include inc/scenes.yaml
+scene: !include scenes.yaml
 
 nissan_leaf:
   username: !secret nissan_user
@@ -114,19 +116,19 @@ xiaomi_aqara:
       mac: !secret mac_aqara
       key: !secret key_aqara
 
-webostv:
-  host: 192.168.12.242
-  name: TV
-  turn_on_action:
-    service: wake_on_lan.send_magic_packet
-    data:
-      mac: "64:95:6C:1C:6F:B7"
-  customize:
-    sources:
-      - kodi
-      - youtube
-      - spotify
-      - netflix
+# webostv:
+#   host: 192.168.12.242
+#   name: TV
+#   turn_on_action:
+#     service: wake_on_lan.send_magic_packet
+#     data:
+#       mac: "64:95:6C:1C:6F:B7"
+#   customize:
+#     sources:
+#       - kodi
+#       - youtube
+#       - spotify
+#       - netflix
 
 spotify:
   client_id: !secret spotify_id

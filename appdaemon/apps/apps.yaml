@@ -1,0 +1,12 @@
+---
+hello_world:
+  module: hello
+  class: HelloWorld
+
+aqara:
+  module: aqara
+  class: Aqara
+  timeout: 5
+  motion_sensors:
+    - binary_sensor.motion_entrance
+    - binary_sensor.motion_corridor
