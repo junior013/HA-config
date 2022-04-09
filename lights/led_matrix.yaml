@@ -1,0 +1,7 @@
+  - platform: mqtt
+    name: LED_Clock
+    optimistic: true
+    schema: json
+    brightness: true
+    icon: mdi:counter
+    command_topic: "led_matrix/LEDMatrix01/command"

@@ -41,6 +41,13 @@ frontend:
 
 default_config:
 
+zha_toolkit:
+
+zha:
+  zigpy_config:
+    ezsp_config:
+      CONFIG_MAX_END_DEVICE_CHILDREN: 0
+
 #mobile_app:
 
 wake_on_lan:
@@ -110,25 +117,12 @@ nissan_leaf:
   update_interval_climate:
     minutes: 15
 
-xiaomi_aqara:
-  gateways:
-    - host: !secret ip_aqara
-      mac: !secret mac_aqara
-      key: !secret key_aqara
-
-# webostv:
-#   host: 192.168.12.242
-#   name: TV
-#   turn_on_action:
-#     service: wake_on_lan.send_magic_packet
-#     data:
-#       mac: "64:95:6C:1C:6F:B7"
-#   customize:
-#     sources:
-#       - kodi
-#       - youtube
-#       - spotify
-#       - netflix
+notify:
+  - platform: group
+    name: "Notify group"
+    services:
+      - service: notify
+      - service: tv
 
 spotify:
   client_id: !secret spotify_id

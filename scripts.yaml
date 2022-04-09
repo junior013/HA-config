@@ -4,7 +4,7 @@ morning_routine:
   sequence:
     - delay:
         hours: 0
-        minutes: 10
+        minutes: 12
         seconds: 0
         milliseconds: 0
     - service: media_player.volume_set
@@ -17,13 +17,16 @@ morning_routine:
         source: Rocker Rádió
       target:
         entity_id: media_player.sonos_beam
+    # - service: media_player.play
+    #   target:
+    #     entity_id: media_player.sonos_beam
     - repeat:
-        count: '4'
+        count: '5'
         sequence:
           - delay:
               hours: 0
-              minutes: 1
-              seconds: 0
+              minutes: 0
+              seconds: 45
               milliseconds: 0
           - service: media_player.volume_up
             data: {}
@@ -31,7 +34,7 @@ morning_routine:
               entity_id: media_player.sonos_beam
     - delay:
         hours: 0
-        minutes: 1
+        minutes: 3
         seconds: 0
         milliseconds: 0
     - choose:
@@ -86,6 +89,11 @@ morning_routine:
         minutes: 5
         seconds: 0
         milliseconds: 0
+    - service: media_player.volume_set
+      data:
+        volume_level: 0.10
+      target:
+        entity_id: media_player.living_room
     - service: sonos.join
       data:
         master: media_player.sonos_beam

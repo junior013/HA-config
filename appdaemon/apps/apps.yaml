@@ -10,3 +10,5 @@ aqara:
   motion_sensors:
     - binary_sensor.motion_entrance
     - binary_sensor.motion_corridor
+    - binary_sensor.motion_etkezo
+    - binary_sensor.motion_furdo

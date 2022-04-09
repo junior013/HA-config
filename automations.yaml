@@ -265,37 +265,37 @@
 - id: bedlight_by_xiaomi_button
   alias: Bed light by Xiaomi button
   trigger:
-    - platform: event
-      event_type: zha_event
-      event_data:
-        device_ieee: 00:15:8d:00:02:0e:b3:9f
-        command: click
-        args:
-          click_type: single
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_ieee: 00:15:8d:00:02:0e:b3:9f
+      command: click
+      args:
+        click_type: single
   action:
     service: light.toggle
     entity_id: light.livingroom_bedlight
 - id: roomlight_by_xiaomi_button
   alias: Livingroom light by Xiaomi button
   trigger:
-    - platform: event
-      event_type: zha_event
-      event_data:
-        device_ieee: 00:15:8d:00:02:0e:b3:9f
-        command: click
-        args:
-          click_type: double
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_ieee: 00:15:8d:00:02:0e:b3:9f
+      command: click
+      args:
+        click_type: double
   action:
     service: light.toggle
     entity_id: light.szoba
 - id: blackout_by_xiaomi_button
   alias: Blackout lights by Xiaomi button
   trigger:
-    - platform: event
-      event_type: zha_event
-      event_data:
-        device_ieee: 00:15:8d:00:02:0e:b3:9f
-        command: hold
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_ieee: 00:15:8d:00:02:0e:b3:9f
+      command: hold
   action:
   - service: light.turn_off
     entity_id: light.offgroup
@@ -326,4 +326,18 @@
     data: {}
     target:
       entity_id: script.morning_routine
+  mode: single
+- id: '1649423891802'
+  alias: Tablet on by motion
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_etkezo
+    to: 'on'
+  condition: []
+  action:
+  - service: button.press
+    data: {}
+    target:
+      entity_id: button.falipanel_etkez_bring_to_foreground
   mode: single
